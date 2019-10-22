@@ -25,16 +25,35 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login() {
+        //Se crea la instancia del posible usuario actual.
         FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
+
+        //Si el usuario actual se encuentra en el FireBase de nuestra aplicación...
         if (usuario != null) {
-            Toast.makeText(this, "inicia sesión: " +
-                    usuario.getDisplayName() + " - " + usuario.getEmail() + " - " +
-                    usuario.getProviders().get(0), Toast.LENGTH_LONG).show();
-            Intent i = new Intent(this, MainActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    | Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(i);
+            //Y si está verificado...
+            if (usuario.isEmailVerified()) {
+                //Se inicia sesión y se pasa a la actividad principal.
+                Toast.makeText(this, "inicia sesión: " +
+                        usuario.getDisplayName() + " - " + usuario.getEmail() + " - " +
+                        usuario.getProviders().get(0), Toast.LENGTH_LONG).show();
+                Intent i = new Intent(this, MainActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        | Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);
+            //En caso contrario...
+            }else {
+                //Se manda un correo de verificación.
+                usuario.sendEmailVerification();
+                //Y se refresca el usuario para que la verificación surja efecto.
+                usuario = FirebaseAuth.getInstance().getCurrentUser();
+                usuario.reload();
+                Toast.makeText(getApplicationContext(),
+                        "Correo de verificación enviado.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        //En caso de que el usuario actual no tenga cuenta sale el repertorio de opciones para
+        //crearse una.
         } else {
             startActivityForResult(AuthUI.getInstance()
                             .createSignInIntentBuilder()
