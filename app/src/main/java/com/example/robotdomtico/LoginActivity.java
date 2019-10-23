@@ -13,7 +13,9 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+
 import java.util.Arrays;
+
 
 public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 123;
@@ -60,7 +62,8 @@ public class LoginActivity extends AppCompatActivity {
                             .setAvailableProviders(Arrays.asList(
                                     new AuthUI.IdpConfig.EmailBuilder().setAllowNewAccounts(true)
                                             .build(),
-                                    new AuthUI.IdpConfig.GoogleBuilder().build())).build()
+                                    new AuthUI.IdpConfig.GoogleBuilder().build(),
+                                    new AuthUI.IdpConfig.FacebookBuilder().build())).build()
                     //.setIsSmartLockEnabled(false)
                     , RC_SIGN_IN);
         }
