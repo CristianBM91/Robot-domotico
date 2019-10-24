@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         cerrarSesion.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 FirebaseAuth.getInstance().signOut();
+                finish();
             }
         });
     }

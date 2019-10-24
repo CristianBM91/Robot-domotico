@@ -4,19 +4,38 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
 public class CustomLoginActivity extends Activity {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -26,11 +45,17 @@ public class CustomLoginActivity extends Activity {
     private EditText etCorreo, etContraseña;
     private TextInputLayout tilCorreo, tilContraseña;
     private ProgressDialog dialogo;
-    private static final int RC_GOOGLE_SIGN_IN = 123;
     private GoogleApiClient googleApiClient;
+    int RC_SIGN_IN = 0;
+    SignInButton signInButton;
+    GoogleSignInClient mGoogleSignInClient;
+    private CallbackManager callbackManager;
+    private LoginButton btnFacebook;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(this);
         setContentView(R.layout.activity_custom_login);
         etCorreo = (EditText) findViewById(R.id.correo);
         etContraseña = (EditText) findViewById(R.id.contraseña);
@@ -41,6 +66,43 @@ public class CustomLoginActivity extends Activity {
         dialogo.setTitle("Verificando usuario");
         dialogo.setMessage("Por favor espere...");
         verificaSiUsuarioValidado();
+
+        //Initializing Views
+        signInButton = findViewById(R.id.sign_in_button);
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signIn();
+            }
+        });
+
+        //Facebook
+        callbackManager = CallbackManager.Factory.create();
+        btnFacebook = (LoginButton) findViewById(R.id.facebook);
+        btnFacebook.setReadPermissions("email", "public_profile");
+        btnFacebook.registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override public void onSuccess(LoginResult loginResult) {
+                        facebookAuth(loginResult.getAccessToken());
+                    }
+                    @Override public void onCancel() {
+                        mensaje("Cancelada autentificación con facebook");
+                    }
+                    @Override public void onError(FacebookException error) {
+                        mensaje(error.getLocalizedMessage());
+                    }
+                });
+        verificaSiUsuarioValidado();
+
     }
 
     private void verificaSiUsuarioValidado() {
@@ -115,5 +177,87 @@ public class CustomLoginActivity extends Activity {
     }
     public void firebaseUI(View v) {
         startActivity(new Intent(this, LoginActivity.class));
+    }
+
+    private void signIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+        else if (requestCode == btnFacebook.getRequestCode()) {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            // Signed in successfully, show authenticated UI.
+            startActivity(new Intent(CustomLoginActivity.this, MainActivity.class));
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w("Google Sign In Error", "signInResult:failed code=" + e.getStatusCode());
+            Toast.makeText(CustomLoginActivity.this, "Failed", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        // Check for existing Google Sign In account, if the user is already signed in
+        // the GoogleSignInAccount will be non-null.
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if(account != null) {
+            startActivity(new Intent(CustomLoginActivity.this, MainActivity.class));
+        }
+        super.onStart();
+    }
+
+    private void facebookAuth(AccessToken accessToken) {
+        final AuthCredential credential = FacebookAuthProvider.getCredential(
+                accessToken.getToken());
+        auth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (!task.isSuccessful()) {
+                            if (task.getException() instanceof
+                                    FirebaseAuthUserCollisionException) {
+                                LoginManager.getInstance().logOut();
+                            }
+                            mensaje(task.getException().getLocalizedMessage());
+                        } else {
+                            verificaSiUsuarioValidado();
+                        }
+                    }
+                });
+    }
+
+    public void autentificaciónAnónima(View v) {
+        dialogo.show();
+        auth.signInAnonymously()
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override public void onComplete(@NonNull Task<AuthResult> task){
+                        if (task.isSuccessful()) {
+                            verificaSiUsuarioValidado();
+                        } else {
+                            dialogo.dismiss();
+                            Log.w("Robot Domótico", "Error en signInAnonymously",
+                                    task.getException());
+                            mensaje( "ERROR al intentarentrar de forma anónima");
+                        }
+                    }
+                });
     }
 }
