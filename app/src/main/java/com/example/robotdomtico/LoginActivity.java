@@ -29,7 +29,6 @@ public class LoginActivity extends AppCompatActivity {
     private void login() {
         //Se crea la instancia del posible usuario actual.
         FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
-
         //Si el usuario actual se encuentra en el FireBase de nuestra aplicación...
         if (usuario != null) {
             //Y si está verificado...
@@ -59,11 +58,14 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             startActivityForResult(AuthUI.getInstance()
                             .createSignInIntentBuilder()
+                            .setLogo(R.mipmap.ic_launcher)
+                            .setTheme(R.style.FirebaseUITema)
                             .setAvailableProviders(Arrays.asList(
                                     new AuthUI.IdpConfig.EmailBuilder().setAllowNewAccounts(true)
                                             .build(),
                                     new AuthUI.IdpConfig.GoogleBuilder().build(),
-                                    new AuthUI.IdpConfig.FacebookBuilder().build())).build()
+                                    new AuthUI.IdpConfig.FacebookBuilder().build(),
+                                    new AuthUI.IdpConfig.TwitterBuilder().build())).build()
                     //.setIsSmartLockEnabled(false)
                     , RC_SIGN_IN);
         }
