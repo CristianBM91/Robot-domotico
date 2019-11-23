@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':iot', ':comun'
 rootProject.name='Robot Domótico'

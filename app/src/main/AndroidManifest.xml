@@ -16,6 +16,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".AcercaDeActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"></activity>
+
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name"></activity>
@@ -36,6 +42,7 @@
                 <data android:scheme="@string/facebook_login_protocol_scheme" />
             </intent-filter>
         </activity>
+        <activity android:name=".PreferenciasActivity" />
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             tools:replace="android:value"

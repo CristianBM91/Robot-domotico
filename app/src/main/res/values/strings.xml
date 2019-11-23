@@ -9,4 +9,11 @@
     <string name="fui_default_toolbar_title">Tipo de Autentificación</string>
     <string name="fui_sign_in_with_email">Entra con tu correo</string>
     <string name="fui_progress_dialog_signing_up">Creando cuenta...</string>
+
+    <string name="home">Inicio</string>
+    <string name="robot">Robot</string>
+    <string name="more">Más...</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

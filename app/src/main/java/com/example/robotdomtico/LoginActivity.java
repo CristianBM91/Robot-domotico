@@ -30,13 +30,13 @@ public class LoginActivity extends AppCompatActivity {
         //Se crea la instancia del posible usuario actual.
         FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
         //Si el usuario actual se encuentra en el FireBase de nuestra aplicación...
-        if (usuario != null) {
+        /*if (usuario != null) {
             //Y si está verificado...
             if (usuario.isEmailVerified()) {
                 //Se inicia sesión y se pasa a la actividad principal.
                 Toast.makeText(this, "inicia sesión: " +
                         usuario.getDisplayName() + " - " + usuario.getEmail() + " - " +
-                        usuario.getProviders().get(0), Toast.LENGTH_LONG).show();
+                        //usuario.getProviders().get(0), Toast.LENGTH_LONG).show();
                 Intent i = new Intent(this, MainActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                         | Intent.FLAG_ACTIVITY_NEW_TASK
@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
                                     new AuthUI.IdpConfig.FacebookBuilder().build())).build()
                     //.setIsSmartLockEnabled(false)
                     , RC_SIGN_IN);
-        }
+        }*/
     }
 
     @Override
