@@ -28,6 +28,9 @@ import com.google.firebase.storage.UploadTask;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 
+import static android.content.ContentValues.TAG;
+
+
 /**
  * Skeleton of an Android Things activity.
  * <p>
@@ -69,6 +72,19 @@ public class MainActivity extends AppCompatActivity {
         mCamera = DoorbellCamera.getInstance();
         mCamera.initializeCamera(this, mCameraHandler, mOnImageAvailableListener);
         temporizadorHandler.postDelayed(tomaFoto, 3 * 1000); //llamamos en 3 seg.
+
+        //Arduino UART
+        Log.i(TAG, "Lista de UART disponibles: " + ArduinoUart.disponibles());
+        ArduinoUart uart = new ArduinoUart("UART0", 115200);
+        Log.d(TAG, "Mandado a Arduino: H");
+        uart.escribir("H");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e){
+            Log.w(TAG, "Error en sleep()", e);
+        }
+        String s = uart.leer();
+        Log.d(TAG, "Recibido de Arduino: "+s);
 
     }
 
