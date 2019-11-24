@@ -14,6 +14,8 @@ import android.os.HandlerThread;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.example.comun.DatosAsinc;
+import com.example.comun.DatosFirestore;
 import com.example.comun.Imagen;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -50,11 +52,15 @@ public class MainActivity extends AppCompatActivity {
     private Handler mCameraHandler;
     private HandlerThread mCameraThread;
     private Handler temporizadorHandler = new Handler();
+    public static DatosFirestore datos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        datos = new DatosFirestore();
+
         // Creates new handlers and associated threads for camera
         mCameraThread = new HandlerThread("CameraBackground");
         mCameraThread.start();
