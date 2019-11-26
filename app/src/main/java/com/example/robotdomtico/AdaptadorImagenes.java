@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.comun.Imagen;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -19,6 +20,13 @@ import com.google.firebase.storage.StorageReference;
 
 public class AdaptadorImagenes extends
         FirestoreRecyclerAdapter<Imagen, AdaptadorImagenes.ViewHolder> {
+    private Context context;
+    protected View.OnClickListener onClickListener;
+    public AdaptadorImagenes(Context context,
+                             @NonNull FirestoreRecyclerOptions<Imagen> options) {
+        super(options);
+        this.context = context.getApplicationContext();
+    }
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public final ImageView imagen;
         public final TextView titulo;
@@ -29,15 +37,6 @@ public class AdaptadorImagenes extends
             this.titulo = (TextView) itemView.findViewById(R.id.textView1);
             this.tiempo = (TextView) itemView.findViewById(R.id.textView2);
         }
-    }
-    private Context context;
-    private FirebaseStorage storage;
-    protected View.OnClickListener onClickListener;
-    public AdaptadorImagenes(Context context,
-                             @NonNull FirestoreRecyclerOptions<Imagen> options) {
-        super(options);
-        this.context = context.getApplicationContext();
-        storage = FirebaseStorage.getInstance();
     }
     @Override public AdaptadorImagenes.ViewHolder onCreateViewHolder(
             ViewGroup parent, int viewType) {
@@ -52,13 +51,11 @@ public class AdaptadorImagenes extends
                 context, imagen.getTiempo(), DateUtils.SECOND_IN_MILLIS,
                 DateUtils.WEEK_IN_MILLIS, 0);
         holder.tiempo.setText(prettyTime);
-        StorageReference imageRef =
-                storage.getReferenceFromUrl(imagen.getUrl());
-        /*GlideApp.with(context)
-                .load(imageRef)
+        Glide.with(context)
+                .load(imagen.getUrl())
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .into(holder.imagen);
-        holder.itemView.setOnClickListener(onClickListener);*/
+        holder.itemView.setOnClickListener(onClickListener);
     }
     public void setOnItemClickListener(View.OnClickListener onClick) {
         onClickListener = onClick;

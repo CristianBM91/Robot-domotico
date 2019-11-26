@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<TextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/TextView01"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Este programa ha sido desarrollado por el equipo 9 de Tecnologías Interactivas en la EPSG en el curso 2019-2020">
-</TextView>

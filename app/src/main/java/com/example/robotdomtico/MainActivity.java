@@ -58,17 +58,16 @@ public class MainActivity extends AppCompatActivity {
         storageRef = FirebaseStorage.getInstance().getReference();
         bajarFichero();
 
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         Query query = FirebaseFirestore.getInstance()
-                .collection("imagenes")
+                .collection("Grabaciones")
+                .orderBy("tiempo", Query.Direction.DESCENDING)
                 .limit(50);
         FirestoreRecyclerOptions<Imagen> opciones = new FirestoreRecyclerOptions
                 .Builder<Imagen>().setQuery(query, Imagen.class).build();
         adaptador = new AdaptadorImagenes(this, opciones);
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adaptador);
-
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override

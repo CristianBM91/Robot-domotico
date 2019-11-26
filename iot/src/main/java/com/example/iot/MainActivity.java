@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     static void registrarImagen(String titulo, String url) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Imagen imagen = new Imagen(titulo, url);
-        db.collection("imagenes").document().set(imagen);
+        db.collection("Grabaciones").document().set(imagen);
     }
 
     private Runnable tomaFoto = new Runnable() {
