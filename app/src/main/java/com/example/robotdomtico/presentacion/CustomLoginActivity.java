@@ -1,4 +1,4 @@
-package com.example.robotdomtico;
+package com.example.robotdomtico.presentacion;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.robotdomtico.R;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;

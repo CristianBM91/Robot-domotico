@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme">
         <!-- android:supportsRtl="true" -->
-        <activity android:name=".CustomLoginActivity">
+        <activity android:name=".presentacion.CustomLoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -18,15 +18,15 @@
         </activity>
 
         <activity
-            android:name=".AcercaDeActivity"
+            android:name=".presentacion.AcercaDeActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.Light.Dialog"></activity>
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".presentacion.LoginActivity"
             android:label="@string/app_name"></activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".presentacion.MainActivity"
             android:label="@string/app_name"></activity>
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges=
@@ -42,9 +42,9 @@
                 <data android:scheme="@string/facebook_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".PreferenciasActivity" />
-        <activity android:name=".GaleriaActivity"></activity>
-        <activity android:name=".RobotActivity" />
+        <activity android:name=".presentacion.PreferenciasActivity" />
+        <activity android:name=".presentacion.GaleriaActivity"></activity>
+        <activity android:name=".presentacion.RobotActivity" />
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             tools:replace="android:value"
             android:value="@string/facebook_application_id"/>

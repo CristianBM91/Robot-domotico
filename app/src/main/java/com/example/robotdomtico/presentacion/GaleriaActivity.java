@@ -1,4 +1,4 @@
-package com.example.robotdomtico;
+package com.example.robotdomtico.presentacion;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,11 +14,12 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.comun.Imagen;
+import com.example.robotdomtico.AdaptadorImagenes;
+import com.example.robotdomtico.R;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;

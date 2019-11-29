@@ -1,4 +1,4 @@
-package com.example.robotdomtico;
+package com.example.robotdomtico.presentacion;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,8 +6,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
+import com.example.robotdomtico.R;
+import com.example.robotdomtico.presentacion.CustomLoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class RobotActivity extends AppCompatActivity {
@@ -19,10 +20,10 @@ public class RobotActivity extends AppCompatActivity {
 
 
         // SE INFLATEA LA TOOLBAR <--------------------------------------------------------------
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarRobot);
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarRobot);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setTitle("Estado");
+        toolbar.setTitle("Estado");*/
 
 
         // SE CREA LA FLECHA ATRAS
