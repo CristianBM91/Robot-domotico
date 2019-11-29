@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "106011592202",
+    "firebase_url": "https://robotdomotico.firebaseio.com",
+    "project_id": "robotdomotico",
+    "storage_bucket": "robotdomotico.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:106011592202:android:11622764328abeaf5201f3",
+        "android_client_info": {
+          "package_name": "com.naranjatradicionaldegandia.elias.robotdomotico"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "106011592202-28bj1u1rbrio41f1fe74mhdli764n37k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.naranjatradicionaldegandia.elias.robotdomotico",
+            "certificate_hash": "987ea68c9740bc17aa341dd5a690b69538137a6e"
+          }
+        },
+        {
+          "client_id": "106011592202-gdn63e8ieqdbnsiapc5qfmesvs4tt90a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaHQ4hVitD1Zy4ZbwHI1WCPu6dhDFONl8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "106011592202-gdn63e8ieqdbnsiapc5qfmesvs4tt90a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
