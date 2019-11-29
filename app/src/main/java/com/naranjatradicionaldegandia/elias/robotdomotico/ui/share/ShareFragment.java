@@ -11,8 +11,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.collection.LruCache;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
@@ -25,8 +28,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.naranjatradicionaldegandia.elias.robotdomotico.CustomLoginActivity;
 import com.naranjatradicionaldegandia.elias.robotdomotico.R;
+import com.naranjatradicionaldegandia.elias.robotdomotico.ui.home.HomeViewModel;
 
 public class ShareFragment extends Fragment {
+
+    private ShareViewModel ShareViewModel;
+
     @Override public View onCreateView(LayoutInflater inflador, ViewGroup contenedor, Bundle savedInstanceState) {
         View vista = inflador.inflate(R.layout.fragment_usuario, contenedor, false);
         FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
@@ -34,8 +41,20 @@ public class ShareFragment extends Fragment {
         nombre.setText(usuario.getDisplayName());
         TextView correo = (TextView) vista.findViewById(R.id.correo);
         nombre.setText(usuario.getEmail());
+
+        ShareViewModel =
+                ViewModelProviders.of(this).get(ShareViewModel.class);
+
         Button cerrarSesion = (Button) vista.findViewById(R.id.btn_cerrar_sesion);
 
+        final TextView textView = vista.findViewById(R.id.text_share);
+
+        ShareViewModel.getText().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                textView.setText(s);
+            }
+        });
 
         cerrarSesion.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {

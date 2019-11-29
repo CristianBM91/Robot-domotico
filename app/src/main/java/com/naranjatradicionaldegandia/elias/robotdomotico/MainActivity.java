@@ -77,9 +77,7 @@ public class MainActivity extends AppCompatActivity {
             // Name, email address, and profile photo Url
 
             Log.d("USUARIO INFO: ","Nombre: " + name +", email: " + email);
-            if(!(name.length() == 0)){
-                ((TextView) findViewById(R.id.nav_nombre)).setText(name);
-            }
+
 
             correo.setText(email);
 
