@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="fui_default_toolbar_title">Authentification type</string>
+    <string name="fui_sign_in_with_email">Sign in with your e-mail address</string>
+    <string name="fui_progress_dialog_signing_up">Creating account...</string>
+
+    <string name="home">Start</string>
+    <string name="robot">Robot</string>
+    <string name="more">More...</string>
+
+</resources>
