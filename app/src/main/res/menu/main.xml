@@ -6,4 +6,12 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+
+    <item
+    android:id="@+id/action_robot"
+    android:orderInCategory="100"
+    android:title="@string/action_robot"
+    app:showAsAction="never"
+    />
+
 </menu>

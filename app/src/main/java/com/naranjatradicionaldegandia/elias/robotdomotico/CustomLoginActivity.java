@@ -38,6 +38,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import static com.naranjatradicionaldegandia.elias.robotdomotico.Usuarios.guardarUsuario;
+
 public class CustomLoginActivity extends Activity {
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private String correo = "";
@@ -112,6 +114,7 @@ public class CustomLoginActivity extends Activity {
         if (auth.getCurrentUser() != null) {
             nombre_usuario = auth.getCurrentUser().getDisplayName();
             correo_usuario = auth.getCurrentUser().getEmail();
+            guardarUsuario(auth.getCurrentUser());
             Intent i = new Intent(this, MainActivity.class);
             i.putExtra("nombre", nombre_usuario);
             i.putExtra("correo", correo_usuario);

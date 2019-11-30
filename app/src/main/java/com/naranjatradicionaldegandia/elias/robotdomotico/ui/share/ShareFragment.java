@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.naranjatradicionaldegandia.elias.robotdomotico.CustomLoginActivity;
+import com.naranjatradicionaldegandia.elias.robotdomotico.PerfilActivity;
 import com.naranjatradicionaldegandia.elias.robotdomotico.R;
 import com.naranjatradicionaldegandia.elias.robotdomotico.ui.home.HomeViewModel;
 
@@ -41,6 +42,7 @@ public class ShareFragment extends Fragment {
         nombre.setText(usuario.getDisplayName());
         TextView correo = (TextView) vista.findViewById(R.id.correo);
         nombre.setText(usuario.getEmail());
+        Button editarPerfil = (Button) vista.findViewById(R.id.editarPerfil);
 
         ShareViewModel =
                 ViewModelProviders.of(this).get(ShareViewModel.class);
@@ -55,7 +57,12 @@ public class ShareFragment extends Fragment {
                 textView.setText(s);
             }
         });
-
+        editarPerfil.setOnClickListener(new View.OnClickListener() {
+                                            public void onClick(View view) {
+                                                Intent i = new Intent(getContext(), PerfilActivity.class);
+                                                startActivity(i);
+                                            }
+                                        });
         cerrarSesion.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 AuthUI.getInstance().signOut(getActivity())
@@ -72,7 +79,8 @@ public class ShareFragment extends Fragment {
                         });
             }
         });
-        // Inicialización Volley (Hacer solo una vez en Singleton o Applicaction)
+        // Inicialización Volley
+
         RequestQueue colaPeticiones = Volley.newRequestQueue(getActivity()
                 .getApplicationContext());
         ImageLoader lectorImagenes = new ImageLoader(colaPeticiones,
@@ -86,7 +94,7 @@ public class ShareFragment extends Fragment {
                         return cache.get(url);
                     }
                 });
-        // Foto de usuario
+        // Foto de perfil de usuario
         Uri urlImagen = usuario.getPhotoUrl();
         if (urlImagen != null) {
             NetworkImageView fotoUsuario = (NetworkImageView)

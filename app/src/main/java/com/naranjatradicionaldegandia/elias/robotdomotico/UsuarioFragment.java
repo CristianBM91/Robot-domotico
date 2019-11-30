@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class UsuarioFragment extends Fragment {
+
     @Override public View onCreateView(LayoutInflater inflador, ViewGroup contenedor, Bundle savedInstanceState) {
         View vista = inflador.inflate(R.layout.fragment_usuario, contenedor, false);
         FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();

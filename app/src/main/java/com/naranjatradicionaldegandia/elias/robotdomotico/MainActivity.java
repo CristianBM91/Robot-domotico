@@ -53,8 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);//da error pero es porque el android studio es gilipollas
+
+        NavigationView navigationView = findViewById(R.id.nav_view);//da error pero es porque el android studio es gilipollas
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(

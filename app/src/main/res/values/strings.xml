@@ -16,4 +16,15 @@
     <string name="menu_tools">Preferencias</string>
     <string name="menu_share">Mi perfil</string>
     <string name="menu_send">Contacto</string>
+    <string name="action_robot">Estado robot</string>
+    <string name="boton_correo">informacion@robomovil.com</string>
+    <string name="boton_llamar">Llamar</string>
+    <string name="info_titulo">Más información sobre nosotros</string>
+    <string name="texto_incidencia">¿Ha tenido algún problema con nuestro producto?</string>
+    <string name="correo_asunto">Cuestión sobre el robot</string>
+    <string name="correo_texto">Hola, tengo ciertas cuestiones sobre vuestro producto.</string>
+    <string name="boton_map">Nuestras oficinas</string>
+    <string name="boton_share">Compartir</string>
+    <string name="info_share">¿Crees que nuestro producto podría ayudar a más gente?</string>
+    <string name="editar_perfil">Editar perfil</string>
 </resources>

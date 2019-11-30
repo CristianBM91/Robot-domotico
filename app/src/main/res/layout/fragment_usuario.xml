@@ -37,6 +37,7 @@
             android:layout_marginLeft="16dp"
             android:padding="8dp"
             android:text="Usuario: " />
+
         <TextView
             android:id="@+id/nombre"
             android:layout_width="wrap_content"
@@ -45,6 +46,7 @@
             android:layout_marginLeft="16dp"
             android:padding="8dp"
             android:layout_height="wrap_content" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,16 +64,46 @@
             android:padding="8dp"
             android:layout_height="wrap_content" />
 
-        <Button
-            android:id="@+id/btn_cerrar_sesion"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
             android:padding="8dp"
-            android:text="Cerrar sesión" />
+            android:text="Teléfono" />
+
+        <TextView
+            android:id="@+id/telefono"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:padding="8dp" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <Button
+                android:id="@+id/editarPerfil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/editar_perfil" />
+
+            <Button
+                android:id="@+id/btn_cerrar_sesion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="16dp"
+                android:padding="8dp"
+                android:text="Cerrar sesión" />
+        </TableRow>
 
 
     </LinearLayout>

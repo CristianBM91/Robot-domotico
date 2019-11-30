@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="fui_default_toolbar_title">Authentification type</string>
-    <string name="fui_sign_in_with_email">Sign in with your e-mail address</string>
-    <string name="fui_progress_dialog_signing_up">Creating account...</string>
-
-    <string name="home">Start</string>
-    <string name="robot">Robot</string>
-    <string name="more">More...</string>
-
+    <string name="app_name">appfinal</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Sin nombre de usuario</string>
+    <string name="nav_header_subtitle"></string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="facebook_application_id" translatable="false">412553426097499</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb412553426097499</string>
+    <string name="twitter_consumer_key"
+        translatable="false">gVcf6F6lgLySwB3VLpg85leji</string>
+    <string name="menu_home">Inicio</string>
+    <string name="menu_gallery">Galería</string>
+    <string name="menu_slideshow">Acerca de</string>
+    <string name="menu_tools">Preferencias</string>
+    <string name="menu_share">Mi perfil</string>
+    <string name="menu_send">Contacto</string>
 </resources>

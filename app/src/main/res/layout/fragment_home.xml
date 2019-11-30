@@ -6,18 +6,165 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/text_home"
-        android:layout_width="8dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
 
+        <ImageButton
+            android:id="@+id/limpiezabtnactivo"
+            android:layout_width="86dp"
+            android:layout_height="86dp"
+            android:layout_marginStart="48dp"
+            android:background="@drawable/redondeadoactivo"
+            android:contentDescription="limpiactivo"
+            android:visibility="invisible"
+            aandroid:layout_editor_absoluteY="128dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/limpieza2" />
+
+        <ImageButton
+            android:id="@+id/onoffbtn"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="92dp"
+            android:background="@drawable/redondo"
+            android:contentDescription="onoff"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/limpiezabtn"
+            app:srcCompat="@drawable/onoff" />
+
+        <TextView
+            android:id="@+id/text_home"
+            android:layout_width="8dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/vigilanciabtn"
+            android:layout_width="86dp"
+            android:layout_height="86dp"
+            android:layout_marginEnd="48dp"
+            android:background="@drawable/redondeado"
+            android:contentDescription="vigi"
+            aandroid:layout_editor_absoluteY="128dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/vigilancia2" />
+
+        <ImageButton
+            android:id="@+id/limpiezabtn"
+            android:layout_width="86dp"
+            android:layout_height="86dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/redondeado"
+            android:contentDescription="limpi"
+            app:layout_constraintBottom_toBottomOf="@+id/textolimpieza2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/limpieza2" />
+
+        <TextView
+            android:id="@+id/textovigilancia2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="477dp"
+            android:text="Modo vigilancia"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            aandroid:layout_editor_absoluteX="262dp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/textotodo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Limpiando / Vigilando"
+            android:textColor="#00C853"
+            android:textSize="24sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/limpiezabtn" />
+
+        <ImageButton
+            android:id="@+id/onoffbtnactivo"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="92dp"
+            android:background="@drawable/redondoactivo"
+            android:contentDescription="onoffactivo"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/limpiezabtn"
+            app:srcCompat="@drawable/onoff" />
+
+        <TextView
+            android:id="@+id/textorecargando"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="recargando"
+            android:text="Recargando..."
+            android:textColor="#D50000"
+            android:textSize="24sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/limpiezabtn" />
+
+        <TextView
+            android:id="@+id/textovigilando"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vigilando"
+            android:textColor="#00C853"
+            android:textSize="24sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/limpiezabtn" />
+
+        <ImageButton
+            android:id="@+id/vigilanciabtnactivo"
+            android:layout_width="86dp"
+            android:layout_height="86dp"
+            android:layout_marginEnd="48dp"
+            android:background="@drawable/redondeadoactivo"
+            android:contentDescription="vigiactivo"
+            android:visibility="invisible"
+            aandroid:layout_editor_absoluteY="128dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/vigilancia2" />
+
+        <TextView
+            android:id="@+id/textolimpiando"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Limpiando"
+            android:textColor="#00C853"
+            android:textSize="24sp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/limpiezabtn" />
+
+        <TextView
+            android:id="@+id/textolimpieza2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Modo limpieza"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="visible"
+            aandroid:layout_editor_absoluteX="30dp"
+            aandroid:layout_editor_absoluteY="230dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
