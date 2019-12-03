@@ -29,6 +29,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.naranjatradicionaldegandia.elias.robotdomotico.CustomLoginActivity;
 import com.naranjatradicionaldegandia.elias.robotdomotico.PerfilActivity;
 import com.naranjatradicionaldegandia.elias.robotdomotico.R;
+import com.naranjatradicionaldegandia.elias.robotdomotico.SesionActivity;
 import com.naranjatradicionaldegandia.elias.robotdomotico.ui.home.HomeViewModel;
 
 public class ShareFragment extends Fragment {
@@ -69,7 +70,7 @@ public class ShareFragment extends Fragment {
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                Intent i = new Intent(getActivity(), CustomLoginActivity.class);
+                                Intent i = new Intent(getActivity(), SesionActivity.class);
                                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                                         | Intent.FLAG_ACTIVITY_NEW_TASK
                                         | Intent.FLAG_ACTIVITY_CLEAR_TASK);

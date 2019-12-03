@@ -30,9 +30,9 @@ public class UsuarioFragment extends Fragment {
         View vista = inflador.inflate(R.layout.fragment_usuario, contenedor, false);
         FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
         TextView nombre = (TextView) vista.findViewById(R.id.nombre);
-        nombre.setText(usuario.getDisplayName());
-        TextView correo = (TextView) vista.findViewById(R.id.correo);
         nombre.setText(usuario.getEmail());
+        TextView correo = (TextView) vista.findViewById(R.id.correo);
+        correo.setText(usuario.getDisplayName());
         Button cerrarSesion = (Button) vista.findViewById(R.id.btn_cerrar_sesion);
 
 
@@ -42,7 +42,7 @@ public class UsuarioFragment extends Fragment {
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                Intent i = new Intent(getActivity(),LoginActivity.class);
+                                Intent i = new Intent(getActivity(),SesionActivity.class);
                                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                                         | Intent.FLAG_ACTIVITY_NEW_TASK
                                         | Intent.FLAG_ACTIVITY_CLEAR_TASK);
