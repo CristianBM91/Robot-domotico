@@ -30,6 +30,15 @@
     <string name="label_google_sign_in">Firebase + Google Sign In</string>
     <string name="desc_google_sign_in">Use a Google Sign In credential to authenticate with Firebase.</string>
 
+    <string name="contact_form">Contáctanos</string>
+    <string name="contact_form_name">Tu nombre</string>
+    <string name="contact_form_email">Tu correo</string>
+    <string name="contact_form_subject">Asunto</string>
+    <string name="contact_form_message">Mensaje</string>
+    <string name="contact_form_button">Enviar</string>
+    <string name="contact_form_post_message">Mensaje enviado. Pronto nos pondremos en contacto contigo. Gracias por su paciencia.</string>
+    <string name="contact_posted">Tu mensaje ha sido enviado correctamente.</string>
+
     <string name="label_facebook_login">Firebase + Facebook Login</string>
     <string name="desc_facebook_login">Use a Facebook Login credential to authenticate with Firebase.</string>
 

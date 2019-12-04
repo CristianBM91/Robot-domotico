@@ -11,15 +11,36 @@
     <string name="facebook_login_protocol_scheme" translatable="false">fb412553426097499</string>
     <string name="twitter_consumer_key"
         translatable="false">gVcf6F6lgLySwB3VLpg85leji</string>
-    <string name="menu_home">Inicio</string>
-    <string name="menu_gallery">Galería</string>
-    <string name="menu_slideshow">Acerca de</string>
-    <string name="menu_tools">Preferencias</string>
-    <string name="menu_share">Mi perfil</string>
-    <string name="menu_send">Contacto</string>
+
+    <string name="contact_form">Contact Us</string>
+    <string name="contact_form_name">Your Name</string>
+    <string name="contact_form_email">Your Email</string>
+    <string name="contact_form_subject">Subject</string>
+    <string name="contact_form_message">Message</string>
+    <string name="contact_form_button">Send Message</string>
+    <string name="contact_form_post_message">Please wait! We\'re sending your message to the support department...</string>
+    <string name="contact_posted">Your message has been successfully delivered.</string>
+
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Information</string>
+    <string name="menu_tools">Settings</string>
+    <string name="menu_share">My profile</string>
+    <string name="menu_send">Contact</string>
     <string name="label_google_sign_in">Firebase + Google Sign In</string>
     <string name="desc_google_sign_in">Use a Google Sign In credential to authenticate with Firebase.</string>
-
+    <string name="action_robot">Robot status</string>
+    <string name="boton_correo">informacion@robomovil.com</string>
+    <string name="boton_llamar">Call</string>
+    <string name="info_titulo">More information about us</string>
+    <string name="texto_incidencia">¿Ha tenido algún problema con nuestro producto?</string>
+    <string name="correo_asunto">Cuestión sobre el robot</string>
+    <string name="correo_texto">Hola, tengo ciertas cuestiones sobre vuestro producto.</string>
+    <string name="boton_map">Nuestras oficinas</string>
+    <string name="boton_share">Compartir</string>
+    <string name="info_share">¿Crees que nuestro producto podría ayudar a más gente?</string>
+    <string name="editar_perfil">Editar perfil</string>
     <string name="label_facebook_login">Firebase + Facebook Login</string>
     <string name="desc_facebook_login">Use a Facebook Login credential to authenticate with Firebase.</string>
 

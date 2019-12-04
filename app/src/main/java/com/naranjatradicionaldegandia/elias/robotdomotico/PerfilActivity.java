@@ -62,7 +62,7 @@ public class PerfilActivity extends Activity {
         valorNombre  = (EditText) this.findViewById(R.id.nameText);
         valorCorreo  = (EditText) this.findViewById(R.id.mailText);
         valorTelefono = (EditText) this.findViewById(R.id.phoneText);
-        valorContra = (EditText) this.findViewById(R.id.contra);
+
         valorNombre.setText(usuario.getDisplayName());
         valorCorreo.setText(usuario.getEmail());
         valorTelefono.setText(usuario.getPhoneNumber());

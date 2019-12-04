@@ -1,6 +1,8 @@
 package com.naranjatradicionaldegandia.elias.robotdomotico;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -33,18 +35,22 @@ public class MainActivity extends AppCompatActivity {
     public StorageReference storageRef;
     private AppBarConfiguration mAppBarConfiguration;
     public TextView correo;
+    private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        context = getBaseContext();
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Inicializando perimetro", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                Intent i = new Intent(context, DibujarActivity.class);
+                startActivity(i);
             }
         });
 
