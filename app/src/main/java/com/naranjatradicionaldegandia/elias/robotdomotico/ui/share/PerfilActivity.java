@@ -1,4 +1,4 @@
-package com.naranjatradicionaldegandia.elias.robotdomotico;
+package com.naranjatradicionaldegandia.elias.robotdomotico.ui.share;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,12 +21,15 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.naranjatradicionaldegandia.elias.robotdomotico.MainActivity;
 import com.naranjatradicionaldegandia.elias.robotdomotico.R;
+import com.naranjatradicionaldegandia.elias.robotdomotico.Usuarios;
 
 import java.util.concurrent.TimeUnit;
 
 import static com.naranjatradicionaldegandia.elias.robotdomotico.Usuarios.actualizarUsuario;
+import static com.naranjatradicionaldegandia.elias.robotdomotico.Usuarios.getNombre;
 
 
 public class PerfilActivity extends Activity {
@@ -56,16 +59,17 @@ public class PerfilActivity extends Activity {
             Bundle e = getIntent().getExtras();
             antiguoTelefono = e.getString("tel");
         }
+
+
         context = getBaseContext();
         guardarCambios = (Button) this.findViewById(R.id.btn_guardar);
         cancelarCambios  = (Button) this.findViewById(R.id.btn_cancelar);
         valorNombre  = (EditText) this.findViewById(R.id.nameText);
         valorCorreo  = (EditText) this.findViewById(R.id.mailText);
         valorTelefono = (EditText) this.findViewById(R.id.phoneText);
-
-        valorNombre.setText(usuario.getDisplayName());
+        Usuarios.getNombre(usuario, valorNombre);
         valorCorreo.setText(usuario.getEmail());
-        valorTelefono.setText(usuario.getPhoneNumber());
+        Usuarios.getTelefono(usuario, valorTelefono);
 
         guardarCambios.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {

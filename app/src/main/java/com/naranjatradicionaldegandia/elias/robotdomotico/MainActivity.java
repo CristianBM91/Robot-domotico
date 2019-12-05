@@ -31,6 +31,8 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 public class MainActivity extends AppCompatActivity {
     public StorageReference storageRef;
     private AppBarConfiguration mAppBarConfiguration;
@@ -76,16 +78,16 @@ public class MainActivity extends AppCompatActivity {
 
         View headerView = navigationView.getHeaderView(0);
         TextView correo = (TextView) headerView.findViewById(R.id.nav_correo);
-
+        TextView nombre = (TextView) headerView.findViewById(R.id.nav_nombre);
         FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
-        String name = usuario.getDisplayName();
+        Usuarios.getNombre(usuario, nombre);
         String email = usuario.getEmail();
         if (usuario != null) {
             // Name, email address, and profile photo Url
 
-            Log.d("USUARIO INFO: ","Nombre: " + name +", email: " + email);
 
 
+            nombre.setText(usuario.getDisplayName());
             correo.setText(email);
 
         }

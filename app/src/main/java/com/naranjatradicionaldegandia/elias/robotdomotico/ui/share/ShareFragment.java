@@ -27,12 +27,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.naranjatradicionaldegandia.elias.robotdomotico.CustomLoginActivity;
-import com.naranjatradicionaldegandia.elias.robotdomotico.PerfilActivity;
 import com.naranjatradicionaldegandia.elias.robotdomotico.R;
 import com.naranjatradicionaldegandia.elias.robotdomotico.SesionActivity;
-import com.naranjatradicionaldegandia.elias.robotdomotico.ui.home.HomeViewModel;
+import com.naranjatradicionaldegandia.elias.robotdomotico.Usuarios;
 
 public class ShareFragment extends Fragment {
 
@@ -46,12 +43,15 @@ public class ShareFragment extends Fragment {
 
 
         TextView nombre = (TextView) vista.findViewById(R.id.nombre);
-        nombre.setText(usuario.getDisplayName());
         TextView correo = (TextView) vista.findViewById(R.id.correo);
         correo.setText(usuario.getEmail());
         Button editarPerfil = (Button) vista.findViewById(R.id.editarPerfil);
         TextView numero = (TextView) vista.findViewById(R.id.telefono);
-        numero.setText(usuario.getPhoneNumber());
+//
+        Usuarios.getNombre(usuario, nombre);
+
+        Usuarios.getTelefono(usuario, numero);
+        //
         ShareViewModel =
                 ViewModelProviders.of(this).get(ShareViewModel.class);
 
