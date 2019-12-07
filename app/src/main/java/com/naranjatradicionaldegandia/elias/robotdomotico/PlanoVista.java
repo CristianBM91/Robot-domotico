@@ -33,12 +33,6 @@ public class PlanoVista extends View {
         this.zoom = zoom;
     }
 
-    public void addZoom(){
-        this.zoom=+ 0.05;
-    }
-    public void quitarZoom(){
-        this.zoom=- 0.05;
-    }
     public void setDatos(List<String> estados, List<Long> tiempos) {
         this.estados = estados;
         this.tiempos = tiempos;

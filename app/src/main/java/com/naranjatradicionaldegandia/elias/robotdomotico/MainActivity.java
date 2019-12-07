@@ -31,20 +31,53 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.widget.TextView;
 
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.w3c.dom.Text;
+
+import static com.naranjatradicionaldegandia.elias.ambos.Mqtt.broker;
+import static com.naranjatradicionaldegandia.elias.ambos.Mqtt.clientId;
+import static com.naranjatradicionaldegandia.elias.ambos.Mqtt.qos;
+import static com.naranjatradicionaldegandia.elias.ambos.Mqtt.topicRoot;
 
 public class MainActivity extends AppCompatActivity {
     public StorageReference storageRef;
     private AppBarConfiguration mAppBarConfiguration;
     public TextView correo;
+    public static MqttClient client;
     private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        context = getBaseContext();
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        try {
+            Log.i("MQTT: ", "Conectando al broker " + broker);
+            client = new MqttClient(broker, clientId, new MemoryPersistence());
+            client.connect();
+        } catch (MqttException e) {
+            Log.e("MQTT", "Error al conectar.", e);
+        }
+        try {
+            Log.i("MQTT", "Publicando mensaje: " + "hola");
+            String mensaje = "Una aplicación con la sesión iniciada de " + user.getEmail() + " se ha conectado con exito.";
+            MqttMessage message = new MqttMessage(mensaje.getBytes());
+            message.setQos(qos);
+            message.setRetained(false);
+            client.publish(topicRoot+"conexion", message);
+        } catch (MqttException e) {
+            Log.e("MQTT", "Error al publicar.", e);
+        }
+
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        context = getBaseContext();
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,4 +139,15 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+    @Override public void onDestroy() {
+        try {
+            Log.i("MQTT", "Desconectado");
+            client.disconnect();
+        } catch (MqttException e) {
+            Log.e("MQTT", "Error al desconectar.", e);
+        }
+        super.onDestroy();
+    }
+
 }
