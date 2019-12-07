@@ -128,4 +128,20 @@
 
     <string name="custom_auth_signin_status_user">User ID: %s</string>
     <string name="custom_auth_signin_status_failed">Error: sign in failed</string>
+    <string name="general_categoria">GENERAL</string>
+    <string name="notificaciones">Notificaciones</string>
+    <string name="notificaciones_summary">Si deseas recibir notificaciones</string>
+    <string name="robot_categoria">ROBOT</string>
+    <string name="tema">Cambiar tema</string>
+    <string name="tema_summary">Elige entre el tema oscuro y claro</string>
+    <string name="nombre_robot_summary">Nombre del robot</string>
+    <string name="comenzar_recarga_preferencias_titulo">Nivel de batería para comenzar a cargar</string>
+    <string name="comenzar_recarga_preferencias_summary">Asigna un nivel de batería con el cual el robot comenzará el modo Recarga Automática. Se recomienda el nivel 20.</string>
+
+    <string name="terminar_recarga_preferencias_titulo">Nivel de batería para terminar la carga</string>
+    <string name="terminar_recarga_preferencias_summary">Asigna un nivel de batería con el cual el robot terminará de cargar con el modo Recarga Automática. Se recomienda el nivel 80.</string>
+
+
+    <string name="activar_recarga_automatica">Activa la recarga automática</string>
+    <string name="activar_recarga_automatica_summary">Activando este modo, el robot se encargará automáticamente de la carga de la batería</string>
 </resources>

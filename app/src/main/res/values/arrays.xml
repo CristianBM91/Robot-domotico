@@ -1,13 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="tiposGraficos">
-        <item>vectorial</item>
-        <item>bitmap</item>
-        <item>3D</item>
+
+    <string-array name="porcentajeBateriaComenzarRecargar" >
+        <item>10%</item>
+        <item>20%</item>
+        <item>30%</item>
+        <item>50%</item>
+        <item>80%</item>
+        <item>90%</item>
+        <item>100%</item>
     </string-array>
-    <string-array name="tiposGraficosValores">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
+
+    <string-array name="porcentajeBateriaComenzarRecargarValores" >
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>50</item>
+        <item>80</item>
+        <item>90</item>
+        <item>100</item>
     </string-array>
+
+    <string-array name="porcentajeBateriaTerminarRecargar" >
+        <item>10%</item>
+        <item>20%</item>
+        <item>30%</item>
+        <item>50%</item>
+        <item>80%</item>
+        <item>90%</item>
+        <item>100%</item>
+    </string-array>
+
+    <string-array name="porcentajeBateriaTerminarRecargarValores" >
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>50</item>
+        <item>80</item>
+        <item>90</item>
+        <item>100</item>
+    </string-array>
+
 </resources>

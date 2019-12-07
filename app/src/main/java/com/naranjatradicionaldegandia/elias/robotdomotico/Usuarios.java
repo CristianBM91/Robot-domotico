@@ -21,15 +21,15 @@ public class Usuarios {
     private static final String TAG = "CLASE USUARIOS";
 
     public static void guardarUsuario(final FirebaseUser user) {
-        Usuario usuario = new Usuario(user.getDisplayName(),user.getEmail(), user.getPhoneNumber())
+        Usuario usuario = new Usuario(user.getDisplayName(),user.getEmail(), user.getPhoneNumber(), "Sin nombre")
                 ;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection("usuarios").document(user.getEmail()).set(usuario);
     }
 
-    public static void actualizarUsuario(final FirebaseUser user, String name, String mail, String phone){
-        Usuario usuario = new Usuario (name, mail, phone);
+    public static void actualizarUsuario(final FirebaseUser user, String name, String mail, String phone, String robot){
+        Usuario usuario = new Usuario (name, mail, phone, robot);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 

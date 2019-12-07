@@ -91,14 +91,14 @@ public class SesionActivity extends AppCompatActivity {
                         guardarUsuario(user);
                     } else {
                         // This is an existing user, show them a welcome back screen.
-                        Toast.makeText(this, "Bienvenido de nuevo " + user.getDisplayName(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "Bienvenido de nuevo, " + user.getDisplayName(), Toast.LENGTH_LONG).show();
                     }
 
                     startActivity(new Intent(this, MainActivity.class));
                     finish();
 
                 } else {
-                    Toast.makeText(this, "" + response.getError().getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Ha habido un error: " + response.getError().getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         }

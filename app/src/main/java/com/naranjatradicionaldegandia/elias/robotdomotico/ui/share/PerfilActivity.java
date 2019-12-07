@@ -87,7 +87,7 @@ public class PerfilActivity extends Activity {
 
                 }
 
-                actualizarUsuario(usuario, nombre, correo, telefono);
+                actualizarUsuario(usuario, nombre, correo, telefono, "");
 
                 endOperation();
             }
