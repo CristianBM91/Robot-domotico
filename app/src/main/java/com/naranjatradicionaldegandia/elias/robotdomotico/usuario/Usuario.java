@@ -1,4 +1,4 @@
-package com.naranjatradicionaldegandia.elias.robotdomotico;
+package com.naranjatradicionaldegandia.elias.robotdomotico.usuario;
 
 public class Usuario {
     private String nombre;

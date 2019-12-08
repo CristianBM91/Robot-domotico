@@ -1,4 +1,4 @@
-package com.naranjatradicionaldegandia.elias.robotdomotico.ui.send;
+package com.naranjatradicionaldegandia.elias.robotdomotico.ui.contacto;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,15 +23,15 @@ import com.naranjatradicionaldegandia.elias.robotdomotico.R;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SendFragment extends Fragment {
+public class ContactoFragment extends Fragment {
 
-    private SendViewModel sendViewModel;
+    private ContactoViewModel sendViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         sendViewModel =
-                ViewModelProviders.of(this).get(SendViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_send, container, false);
+                ViewModelProviders.of(this).get(ContactoViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_contacto, container, false);
         final TextView textView = root.findViewById(R.id.text_send);
         sendViewModel.getText().observe(this, new Observer<String>() {
             @Override

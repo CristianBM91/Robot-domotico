@@ -1,6 +1,5 @@
-package com.naranjatradicionaldegandia.elias.robotdomotico;
+package com.naranjatradicionaldegandia.elias.robotdomotico.presentacion;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,11 +17,12 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.naranjatradicionaldegandia.elias.robotdomotico.R;
+import com.naranjatradicionaldegandia.elias.robotdomotico.usuario.Usuarios;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -36,7 +36,6 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
-import org.w3c.dom.Text;
 
 import static com.naranjatradicionaldegandia.elias.ambos.Mqtt.broker;
 import static com.naranjatradicionaldegandia.elias.ambos.Mqtt.clientId;
@@ -143,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, AjustesActivity.class));
             return true;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
     @Override
     public boolean onSupportNavigateUp() {

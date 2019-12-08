@@ -1,4 +1,4 @@
-package com.naranjatradicionaldegandia.elias.robotdomotico;
+package com.naranjatradicionaldegandia.elias.robotdomotico.plano;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,11 +7,13 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.naranjatradicionaldegandia.elias.robotdomotico.plano.Direccion;
+
 import java.util.List;
 
-import static com.naranjatradicionaldegandia.elias.robotdomotico.Direccion.ARRIBA;
-import static com.naranjatradicionaldegandia.elias.robotdomotico.Direccion.DERECHA;
-import static com.naranjatradicionaldegandia.elias.robotdomotico.Direccion.IZQUIERDA;
+import static com.naranjatradicionaldegandia.elias.robotdomotico.plano.Direccion.ARRIBA;
+import static com.naranjatradicionaldegandia.elias.robotdomotico.plano.Direccion.DERECHA;
+import static com.naranjatradicionaldegandia.elias.robotdomotico.plano.Direccion.IZQUIERDA;
 
 public class PlanoVista extends View {
 

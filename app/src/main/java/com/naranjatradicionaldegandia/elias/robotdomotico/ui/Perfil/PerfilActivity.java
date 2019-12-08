@@ -1,35 +1,21 @@
-package com.naranjatradicionaldegandia.elias.robotdomotico.ui.share;
+package com.naranjatradicionaldegandia.elias.robotdomotico.ui.Perfil;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseException;
-import com.google.firebase.FirebaseTooManyRequestsException;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.naranjatradicionaldegandia.elias.robotdomotico.MainActivity;
+import com.naranjatradicionaldegandia.elias.robotdomotico.presentacion.MainActivity;
 import com.naranjatradicionaldegandia.elias.robotdomotico.R;
-import com.naranjatradicionaldegandia.elias.robotdomotico.Usuarios;
+import com.naranjatradicionaldegandia.elias.robotdomotico.usuario.Usuarios;
 
-import java.util.concurrent.TimeUnit;
-
-import static com.naranjatradicionaldegandia.elias.robotdomotico.Usuarios.actualizarUsuario;
-import static com.naranjatradicionaldegandia.elias.robotdomotico.Usuarios.getNombre;
+import static com.naranjatradicionaldegandia.elias.robotdomotico.usuario.Usuarios.actualizarUsuario;
 
 
 public class PerfilActivity extends Activity {

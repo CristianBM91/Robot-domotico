@@ -1,4 +1,4 @@
-package com.naranjatradicionaldegandia.elias.robotdomotico;
+package com.naranjatradicionaldegandia.elias.robotdomotico.usuario;
 
 import android.util.Log;
 import android.widget.TextView;
@@ -7,13 +7,9 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.naranjatradicionaldegandia.elias.robotdomotico.Usuario;
 
 public class Usuarios {
 

@@ -130,7 +130,7 @@
     <string name="custom_auth_signin_status_failed">Error: sign in failed</string>
     <string name="general_categoria">GENERAL</string>
     <string name="notificaciones">Notificaciones</string>
-    <string name="notificaciones_summary">Si deseas recibir notificaciones</string>
+    <string name="notificaciones_summary">Incluye también la notificación del modo Amenaza</string>
     <string name="robot_categoria">ROBOT</string>
     <string name="tema">Cambiar tema</string>
     <string name="tema_summary">Elige entre el tema oscuro y claro</string>

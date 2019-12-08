@@ -1,4 +1,4 @@
-package com.naranjatradicionaldegandia.elias.robotdomotico.ui.share;
+package com.naranjatradicionaldegandia.elias.robotdomotico.ui.Perfil;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -28,12 +28,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.naranjatradicionaldegandia.elias.robotdomotico.R;
-import com.naranjatradicionaldegandia.elias.robotdomotico.SesionActivity;
-import com.naranjatradicionaldegandia.elias.robotdomotico.Usuarios;
+import com.naranjatradicionaldegandia.elias.robotdomotico.presentacion.SesionActivity;
+import com.naranjatradicionaldegandia.elias.robotdomotico.usuario.Usuarios;
 
-public class ShareFragment extends Fragment {
+public class PerfilFragment extends Fragment {
 
-    private ShareViewModel ShareViewModel;
+    private PerfilViewModel PerfilViewModel;
 
     @Override public View onCreateView(LayoutInflater inflador, ViewGroup contenedor, Bundle savedInstanceState) {
         View vista = inflador.inflate(R.layout.fragment_usuario, contenedor, false);
@@ -52,14 +52,14 @@ public class ShareFragment extends Fragment {
 
         Usuarios.getTelefono(usuario, numero);
         //
-        ShareViewModel =
-                ViewModelProviders.of(this).get(ShareViewModel.class);
+        PerfilViewModel =
+                ViewModelProviders.of(this).get(PerfilViewModel.class);
 
         Button cerrarSesion = (Button) vista.findViewById(R.id.btn_cerrar_sesion);
 
         final TextView textView = vista.findViewById(R.id.text_share);
 
-        ShareViewModel.getText().observe(this, new Observer<String>() {
+        PerfilViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

@@ -1,4 +1,4 @@
-package com.naranjatradicionaldegandia.elias.robotdomotico;
+package com.naranjatradicionaldegandia.elias.robotdomotico.presentacion;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -18,15 +18,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
-import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.ActionCodeSettings;
-import com.google.firebase.auth.AdditionalUserInfo;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthSettings;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.FirebaseUserMetadata;
@@ -38,12 +35,13 @@ import com.google.firebase.auth.PlayGamesAuthProvider;
 import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.naranjatradicionaldegandia.elias.robotdomotico.R;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static com.naranjatradicionaldegandia.elias.robotdomotico.Usuarios.guardarUsuario;
+import static com.naranjatradicionaldegandia.elias.robotdomotico.usuario.Usuarios.guardarUsuario;
 
 public class SesionActivity extends AppCompatActivity {
     private static final String TAG = "INICIO SESION";

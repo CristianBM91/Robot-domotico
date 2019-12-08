@@ -1,7 +1,6 @@
-package com.naranjatradicionaldegandia.elias.robotdomotico;
+package com.naranjatradicionaldegandia.elias.robotdomotico.presentacion;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.SeekBar;
 
@@ -10,6 +9,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.naranjatradicionaldegandia.elias.robotdomotico.plano.PlanoVista;
+import com.naranjatradicionaldegandia.elias.robotdomotico.R;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +24,7 @@ public class DibujarActivity extends AppCompatActivity {
     PlanoVista planoVista;
     private double zoom = 0.015;
     SeekBar seekbar;
-    private int progress_value = 1;
+
     private  int progresoAnterior = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

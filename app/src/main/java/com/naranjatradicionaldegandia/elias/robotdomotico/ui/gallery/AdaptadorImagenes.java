@@ -1,4 +1,4 @@
-package com.naranjatradicionaldegandia.elias.robotdomotico;
+package com.naranjatradicionaldegandia.elias.robotdomotico.ui.gallery;
 
 import android.content.Context;
 import android.text.format.DateUtils;
@@ -15,11 +15,14 @@ import com.bumptech.glide.Glide;
 import com.naranjatradicionaldegandia.elias.ambos.Imagen;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.naranjatradicionaldegandia.elias.robotdomotico.R;
 
 
 public class AdaptadorImagenes extends
         FirestoreRecyclerAdapter<Imagen, AdaptadorImagenes.ViewHolder> {
     private Context context;
+
+
     protected View.OnClickListener onClickListener;
     public AdaptadorImagenes(Context context,
                              @NonNull FirestoreRecyclerOptions<Imagen> options) {
@@ -50,6 +53,7 @@ public class AdaptadorImagenes extends
                 context, imagen.getTiempo(), DateUtils.SECOND_IN_MILLIS,
                 DateUtils.WEEK_IN_MILLIS, 0);
         holder.tiempo.setText(prettyTime);
+
         Glide.with(context)
                 .load(imagen.getUrl())
                 .placeholder(R.drawable.ic_launcher_foreground)

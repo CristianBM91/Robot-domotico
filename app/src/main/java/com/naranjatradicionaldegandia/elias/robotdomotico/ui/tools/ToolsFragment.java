@@ -11,12 +11,18 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.preference.PreferenceFragmentCompat;
 
 import com.naranjatradicionaldegandia.elias.robotdomotico.R;
 
-public class ToolsFragment extends Fragment {
+public class ToolsFragment extends PreferenceFragmentCompat {
 
     private ToolsViewModel toolsViewModel;
+
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        setPreferencesFromResource(R.xml.preferencias, rootKey);
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

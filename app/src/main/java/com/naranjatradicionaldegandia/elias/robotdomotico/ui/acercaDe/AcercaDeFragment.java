@@ -1,7 +1,6 @@
-package com.naranjatradicionaldegandia.elias.robotdomotico.ui.slideshow;
+package com.naranjatradicionaldegandia.elias.robotdomotico.ui.acercaDe;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,15 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.naranjatradicionaldegandia.elias.robotdomotico.R;
 
-public class SlideshowFragment extends Fragment {
+public class AcercaDeFragment extends Fragment {
     private Context contexto;
 
     public  boolean isPermissionGranted() {
@@ -69,10 +65,14 @@ public class SlideshowFragment extends Fragment {
             // permissions this app might request
         }
     }
+
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_info, container, false);
+        View root = inflater.inflate(R.layout.fragment_acercade, container, false);
+      ;
+        final TextView textView = root.findViewById(R.id.text_share);
 
         //Intenciones del Fragment de Info (OJO, LA DE COMPARTIR VA POR SEPARADO EN CompartirAppFragment)------------
         Button btnllamar = (Button) root.findViewById(R.id.btn_llamar);
@@ -94,6 +94,7 @@ public class SlideshowFragment extends Fragment {
         @Override
         public void onClick(View v) {
             Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
             intent.putExtra(Intent.EXTRA_TEXT,
                     "¡Mira esta aplicación! Sirve para controlar a un robot muy chulo.");
             startActivity(intent);

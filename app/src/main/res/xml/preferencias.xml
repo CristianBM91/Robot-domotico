@@ -24,10 +24,6 @@
             android:singleLine="true"
             android:title="@string/nombre_robot_summary" />
 
-        <CheckBoxPreference
-            android:key="noti"
-            android:title="@string/notificaciones"
-            android:summary="@string/notificaciones_summary"/>
         <SwitchPreference
             android:defaultValue="false"
             android:key="activar_recarga_automatica"
@@ -46,8 +42,8 @@
             android:entries="@array/porcentajeBateriaTerminarRecargar"
             android:entryValues="@array/porcentajeBateriaTerminarRecargarValores"
             android:key="valoresTerminarRecarga"
-            android:title="@string/terminar_recarga_preferencias_titulo"
-            android:summary="@string/terminar_recarga_preferencias_summary"/>
+            android:summary="@string/terminar_recarga_preferencias_summary"
+            android:title="@string/terminar_recarga_preferencias_titulo" />
     </PreferenceCategory>
 
 </PreferenceScreen>

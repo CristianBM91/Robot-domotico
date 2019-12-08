@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/nav_slideshow"
-        android:name="com.naranjatradicionaldegandia.elias.robotdomotico.ui.slideshow.SlideshowFragment"
+        android:name="com.naranjatradicionaldegandia.elias.robotdomotico.ui.acercaDe.AcercaDeFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
 
@@ -31,13 +31,13 @@
 
     <fragment
         android:id="@+id/nav_share"
-        android:name="com.naranjatradicionaldegandia.elias.robotdomotico.ui.share.ShareFragment"
+        android:name="com.naranjatradicionaldegandia.elias.robotdomotico.ui.Perfil.PerfilFragment"
         android:label="@string/menu_share"
-        tools:layout="@layout/fragment_share" />
+        tools:layout="@layout/fragment_usuario" />
 
     <fragment
         android:id="@+id/nav_send"
-        android:name="com.naranjatradicionaldegandia.elias.robotdomotico.ui.send.SendFragment"
+        android:name="com.naranjatradicionaldegandia.elias.robotdomotico.ui.contacto.ContactoFragment"
         android:label="@string/menu_send"
-        tools:layout="@layout/fragment_send" />
+        tools:layout="@layout/fragment_contacto" />
 </navigation>
