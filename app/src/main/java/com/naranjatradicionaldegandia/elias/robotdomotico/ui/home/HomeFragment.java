@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,6 +29,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
+import com.naranjatradicionaldegandia.elias.ambos.Robot;
 import com.naranjatradicionaldegandia.elias.robotdomotico.R;
 import com.naranjatradicionaldegandia.elias.robotdomotico.ServicioOn;
 
@@ -198,6 +201,8 @@ public class HomeFragment extends Fragment {
 
 
     } // ()
+
+
     public void actualizarImagen(){
 
         final Handler handler = new Handler();
@@ -205,8 +210,8 @@ public class HomeFragment extends Fragment {
 
 
             public void run() {
-
-                Task<QuerySnapshot> query = FirebaseFirestore.getInstance()
+            final FirebaseFirestore db = FirebaseFirestore.getInstance();
+                final Task<QuerySnapshot> query = FirebaseFirestore.getInstance()
                         .collection("Grabaciones")
                         .orderBy("tiempo", Query.Direction.DESCENDING)
                         .limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -216,14 +221,30 @@ public class HomeFragment extends Fragment {
                                 if (task.isSuccessful()) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         Log.d("FIREBASE", document.getId() + " => " + document.getData());
+
                                         String url = document.getString("url");
                                         ImageView imagen = getActivity().findViewById(R.id.imgrp);
 
                                         if(HomeFragment.this.isVisible()) {
                                             Glide.with(getContext())
                                                     .load(url)
-                                                    .placeholder(R.drawable.ic_launcher_foreground)
+
                                                     .into(imagen);
+
+                                            db.collection("Grabaciones").document(document.getId())
+                                                    .delete()
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Log.d("FIREBASE", "DocumentSnapshot successfully deleted!");
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.w("FIREBASE", "Error deleting document", e);
+                                                        }
+                                                    });
                                         }
 
                                     }
@@ -231,9 +252,12 @@ public class HomeFragment extends Fragment {
                                     Log.d("FIREBASE", "Error al cargar imagenes: ", task.getException());
                                 }
                             }
+
+
                             }
                         });
-                handler.postDelayed(this, 200);
+
+                handler.postDelayed(this, 100);
             }
         };
         handler.postDelayed(runnable, 200);
@@ -255,6 +279,8 @@ public class HomeFragment extends Fragment {
                     onoff.setVisibility(View.INVISIBLE);
                     onoffactivo.setVisibility(View.VISIBLE);
 
+                    Robot.activarModoAutomatico();
+
                     getActivity().startService(new Intent(getContext(), ServicioOn.class));
                     // TEXTO QUE MUESTRA ESTADO <-------------
                     Task<QuerySnapshot> query = FirebaseFirestore.getInstance()
@@ -271,7 +297,7 @@ public class HomeFragment extends Fragment {
 
                                             Glide.with(getContext())
                                                     .load(url)
-                                                    .placeholder(R.drawable.ic_launcher_foreground)
+
                                                     .into(imagen);
                                         }
                                     } else {
