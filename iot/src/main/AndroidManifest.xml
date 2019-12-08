@@ -2,7 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.naranjatradicionaldegandia.elias.iot">
     <uses-permission android:name="android.permission.INTERNET" />
-    <application android:label="@string/app_name">
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission
+        android:name="com.google.android.things.permission.MANAGE_INPUT_DRIVERS"/>
+    <uses-permission
+        android:name="com.google.android.things.permission.USE_PERIPHERAL_IO"/>
+
+    <application android:label="@string/app_name"
+        android:theme="@style/AppTheme">
         <uses-library android:name="com.google.android.things" />
 
         <activity android:name=".MainActivity">

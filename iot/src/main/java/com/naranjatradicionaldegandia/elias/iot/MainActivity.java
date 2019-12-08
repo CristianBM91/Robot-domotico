@@ -14,9 +14,6 @@ import android.os.HandlerThread;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.example.comun.DatosAsinc;
-import com.example.comun.DatosFirestore;
-import com.example.comun.Imagen;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -26,12 +23,23 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.naranjatradicionaldegandia.elias.ambos.DatosFirestore;
 import com.naranjatradicionaldegandia.elias.ambos.Imagen;
-import com.naranjatradicionaldegandia.elias.iot.R;
+import com.naranjatradicionaldegandia.elias.ambos.Mqtt;
+
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import java.nio.ByteBuffer;
 import java.util.UUID;
 
 import static android.content.ContentValues.TAG;
+import static com.naranjatradicionaldegandia.elias.ambos.Mqtt.broker;
+import static com.naranjatradicionaldegandia.elias.ambos.Mqtt.clientId;
+import static com.naranjatradicionaldegandia.elias.ambos.Mqtt.qos;
+import static com.naranjatradicionaldegandia.elias.ambos.Mqtt.topicRoot;
 
 
 /**
@@ -59,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private HandlerThread mCameraThread;
     private Handler temporizadorHandler = new Handler();
     public static DatosFirestore datos;
+    public static MqttClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,11 +92,45 @@ public class MainActivity extends AppCompatActivity {
         uart.escribir("H");
         try {
             Thread.sleep(5000);
-        } catch (InterruptedException e){
+        } catch (InterruptedException e) {
             Log.w(TAG, "Error en sleep()", e);
         }
         String s = uart.leer();
-        Log.d(TAG, "Recibido de Arduino: "+s);
+        Log.d(TAG, "Recibido de Arduino: " + s);
+
+        //mqtt
+        //MQTT
+        try {
+            Log.i(TAG, "Conectando al broker " + broker);
+            client = new MqttClient(broker, clientId, new MemoryPersistence());
+            MqttConnectOptions connOpts = new MqttConnectOptions();
+            connOpts.setCleanSession(true);
+            connOpts.setKeepAliveInterval(60);
+            connOpts.setWill(topicRoot+"WillTopic", "App desconectada".getBytes(),
+                    qos, false);
+            client.connect(connOpts);
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al conectar.", e);
+        }
+
+        try {
+            Log.i(TAG, "Suscrito a " + topicRoot+"POWER");
+            client.subscribe(topicRoot+"POWER", qos);
+            client.setCallback((MqttCallback) this);
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al suscribir.", e);
+        }
+
+        try {
+            Log.i(TAG, "Publicando mensaje: " + "hola");
+            MqttMessage message = new MqttMessage("hola".getBytes());
+            message.setQos(qos);
+            message.setRetained(false);
+            client.publish(topicRoot+"Raspberry Pi", message);
+        } catch (MqttException e) {
+            Log.e(TAG, "Error al publicar.", e);
+        }
+        Log.v("TAG", "Publicando en MQTT");
 
     }
 
