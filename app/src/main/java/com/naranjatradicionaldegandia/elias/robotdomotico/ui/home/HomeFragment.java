@@ -2,12 +2,23 @@ package com.naranjatradicionaldegandia.elias.robotdomotico.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.naranjatradicionaldegandia.elias.ambos.Imagen;
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -30,7 +41,7 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-
+        actualizarImagen();
     vista = root;
         // DEFINICIONES <---------------------------------------------------------------------------
 
@@ -187,7 +198,47 @@ public class HomeFragment extends Fragment {
 
 
     } // ()
+    public void actualizarImagen(){
 
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+
+
+            public void run() {
+
+                Task<QuerySnapshot> query = FirebaseFirestore.getInstance()
+                        .collection("Grabaciones")
+                        .orderBy("tiempo", Query.Direction.DESCENDING)
+                        .limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if(HomeFragment.this.isVisible()){
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Log.d("FIREBASE", document.getId() + " => " + document.getData());
+                                        String url = document.getString("url");
+                                        ImageView imagen = getActivity().findViewById(R.id.imgrp);
+
+                                        if(HomeFragment.this.isVisible()) {
+                                            Glide.with(getContext())
+                                                    .load(url)
+                                                    .placeholder(R.drawable.ic_launcher_foreground)
+                                                    .into(imagen);
+                                        }
+
+                                    }
+                                } else {
+                                    Log.d("FIREBASE", "Error al cargar imagenes: ", task.getException());
+                                }
+                            }
+                            }
+                        });
+                handler.postDelayed(this, 200);
+            }
+        };
+        handler.postDelayed(runnable, 200);
+
+    }
     // ---------------------------------------------------------------------------------------------
     // --------------------- Pulsar encendido ------------------------------------------------------
     void pulsarEncendido (final ImageButton onoff, final ImageButton onoffactivo, final int[] contadorOnoff, final boolean[] activado, final boolean[] limpiar, final boolean[] vigilar, final TextView limpiando, final TextView vigilando, final TextView limpiandovigilando){
@@ -206,6 +257,29 @@ public class HomeFragment extends Fragment {
 
                     getActivity().startService(new Intent(getContext(), ServicioOn.class));
                     // TEXTO QUE MUESTRA ESTADO <-------------
+                    Task<QuerySnapshot> query = FirebaseFirestore.getInstance()
+                            .collection("Grabaciones")
+                            .orderBy("tiempo", Query.Direction.DESCENDING)
+                            .limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            Log.d("FIREBASE", document.getId() + " => " + document.getData());
+                                            String url = document.getString("url");
+                                            ImageView imagen = getActivity().findViewById(R.id.imgrp);
+
+                                            Glide.with(getContext())
+                                                    .load(url)
+                                                    .placeholder(R.drawable.ic_launcher_foreground)
+                                                    .into(imagen);
+                                        }
+                                    } else {
+                                        Log.d("FIREBASE", "Error getting documents: ", task.getException());
+                                    }
+                                }
+                            });
+
 
                     if (limpiar[0] & !vigilar[0]) {
 

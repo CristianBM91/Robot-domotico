@@ -96,13 +96,14 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="200dp"
-            android:layout_marginBottom="107dp"
+            android:layout_marginBottom="84dp"
             android:text="Modo limpieza"
             android:textSize="18sp"
             android:textStyle="bold"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/limpiezabtnactivo"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
@@ -177,7 +178,21 @@
         <ImageView
             android:id="@+id/imgrp"
             android:layout_width="220dp"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="@+id/onoffbtn" />
+            android:layout_height="220dp"
+            android:layout_marginStart="95dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="96dp"
+            android:layout_marginBottom="89dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/onoffbtnactivo" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="20dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
