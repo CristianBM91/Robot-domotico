@@ -74,7 +74,7 @@ public class HomeFragment extends Fragment {
         //Button bateriallena =  vista.findViewById(R.id.bateriallena);
         //Button bateriacasillena = findViewById(R.id.bateriacasillena);
         //Button bateriamitad = findViewById(R.id.bateriamitad);
-      //  Button bateriacasivacia =  vista.findViewById(R.id.bateriacasivacia);
+        //  Button bateriacasivacia =  vista.findViewById(R.id.bateriacasivacia);
         //Button bateriavacia = findViewById(R.id.bateriavacia);
 
 
@@ -206,22 +206,22 @@ public class HomeFragment extends Fragment {
 
     } // ()
 
-void borrarImagen(final StorageReference imagenReferencia){
+    void borrarImagen(final StorageReference imagenReferencia){
 
-    final Handler handler = new Handler();
+        final Handler handler = new Handler();
 
-    Runnable runnable = new Runnable() {
-
-
-        public void run() {
+        Runnable runnable = new Runnable() {
 
 
-            imagenReferencia.delete();
-        }
+            public void run() {
 
-    };
-    handler.postDelayed(runnable, 1000);
-}
+
+                imagenReferencia.delete();
+            }
+
+        };
+        handler.postDelayed(runnable, 1000);
+    }
     public void actualizarImagen(){
 
         final Handler handler = new Handler();
@@ -237,28 +237,28 @@ void borrarImagen(final StorageReference imagenReferencia){
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if(HomeFragment.this.isVisible()){
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        Log.d("FIREBASE", document.getId() + " => " + document.getData());
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            Log.d("FIREBASE", document.getId() + " => " + document.getData());
 
-                                        String url = document.getString("url");
-                                        String titulo = document.getString("titulo");
-                                        ImageView imagen = getActivity().findViewById(R.id.imgrp);
-                                        StorageReference imagenReferencia = storageRef.child("imagenes/" + document.getId());
-                                        if(HomeFragment.this.isVisible()) {
-                                            Glide.with(getContext())
-                                                    .load(url)
+                                            String url = document.getString("url");
+                                            String titulo = document.getString("titulo");
+                                            ImageView imagen = getActivity().findViewById(R.id.imgrp);
+                                            StorageReference imagenReferencia = storageRef.child("imagenes/" + document.getId());
+                                            if(HomeFragment.this.isVisible()) {
+                                                Glide.with(getContext())
+                                                        .load(url)
 
-                                                    .into(imagen);
+                                                        .into(imagen);
 
                                                 borrarImagen(imagenReferencia);
-                                        }
+                                            }
 
+                                        }
+                                    } else {
+                                        Log.d("FIREBASE", "Error al cargar imagenes: ", task.getException());
                                     }
-                                } else {
-                                    Log.d("FIREBASE", "Error al cargar imagenes: ", task.getException());
                                 }
-                            }
 
 
                             }
@@ -373,6 +373,6 @@ void borrarImagen(final StorageReference imagenReferencia){
 
     // menu toolbar ---------------------------------------------------------------------
 
- // bool
+    // bool
 
 }

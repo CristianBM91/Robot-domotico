@@ -3,6 +3,7 @@ package com.naranjatradicionaldegandia.elias.robotdomotico.ui.contacto;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.naranjatradicionaldegandia.elias.robotdomotico.R;
 
 import java.util.regex.Matcher;
@@ -45,6 +50,24 @@ public class ContactoFragment extends Fragment {
         final EditText your_subject     = (EditText) root.findViewById(R.id.your_subject);
         final EditText your_message     = (EditText) root.findViewById(R.id.your_message);
         your_name.setText(usuario.getDisplayName());
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String nombre = "";
+
+        db.collection("usuarios").document(usuario.getEmail()).get()
+                .addOnCompleteListener(
+                        new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task){
+                                if (task.isSuccessful()) {
+                                    String nombre = task.getResult().getString("nombre");
+                                    your_name.setText(nombre);
+                                    Log.d("Firestore", "nombre:" + nombre);
+                                } else {
+                                    Log.e("Firestore", "Error al leer", task.getException());
+                                }
+                            }
+                        });
+
         your_email.setText(usuario.getEmail());
 
         Button email = (Button) root.findViewById(R.id.post_message);

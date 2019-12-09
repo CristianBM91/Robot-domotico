@@ -15,12 +15,16 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.naranjatradicionaldegandia.elias.robotdomotico.R;
+import com.naranjatradicionaldegandia.elias.robotdomotico.presentacion.PreferenciasFragment;
 
 public class ToolsFragment extends PreferenceFragment {
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.preferencias);
+        getFragmentManager().beginTransaction()
+
+                .replace(android.R.id.content, new PreferenciasFragment())
+                .commit();
     }
 
 

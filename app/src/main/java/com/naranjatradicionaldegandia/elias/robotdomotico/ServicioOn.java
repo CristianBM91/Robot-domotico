@@ -1,11 +1,16 @@
 package com.naranjatradicionaldegandia.elias.robotdomotico;
 
+import android.annotation.SuppressLint;
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.AudioAttributes;
 import android.os.Build;
 import android.util.Log;
 
@@ -17,10 +22,12 @@ import com.naranjatradicionaldegandia.elias.robotdomotico.presentacion.MainActiv
 
 public class ServicioOn extends IntentService {
     private NotificationManager notificationManager;
-    static final String CANAL_ID = "mi_canal";
+    static final String CHANNEL_ID = "mi_canal";
     static final int NOTIFICACION_ID = 1;
     private static final String TAG = "SERVICIO ON";
-
+    NotificationChannel mChannel;
+    private NotificationManager mManager;
+    private String title, msg, actionCode;
     public ServicioOn(){
         super("ServicioOn");
     }
@@ -34,29 +41,53 @@ public class ServicioOn extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         Log.d(TAG, "Inicializado");
+        createNotification("El robot ha sido encendido", "Robot Domótico");
 
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(
-                    CANAL_ID, "Mis Notificaciones",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            notificationChannel.setDescription("Descripcion del canal");
-            notificationChannel.enableLights(true);
-            notificationChannel.setLightColor(Color.RED);
-            notificationChannel.setVibrationPattern(new long[]{0, 100, 300, 100});
-            notificationChannel.enableVibration(true);
-            notificationManager.createNotificationChannel(notificationChannel);
+
         }
-        final NotificationCompat.Builder notificacion =
-                new NotificationCompat.Builder(ServicioOn.this, CANAL_ID)
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("Robot Domótico")
-                        .setContentText("El robot está encendido");
+
+    public void createNotification(String msg, String title) {
+        Intent intent = null;
+
+            intent = new Intent(this, MainActivity.class);
+
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel androidChannel = new NotificationChannel(CHANNEL_ID,
+                    title, NotificationManager.IMPORTANCE_DEFAULT);
+            // Sets whether notifications posted to this channel should display notification lights
+            androidChannel.enableLights(true);
+            // Sets whether notification posted to this channel should vibrate.
+            androidChannel.enableVibration(true);
+            // Sets the notification light color for notifications posted to this channel
+            androidChannel.setLightColor(Color.GREEN);
+
+            // Sets whether notifications posted to this channel appear on the lockscreen or not
+            androidChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+            getManager().createNotificationChannel(androidChannel);
+            Notification.Builder nb = new Notification.Builder(getApplicationContext(), CHANNEL_ID)
+                    .setContentTitle(title)
+                    .setContentText(msg)
+                    .setTicker(title)
+                    .setShowWhen(true)
+                    .setSmallIcon(R.mipmap.ic_launcher_foreground)
+                    .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
+                            R.mipmap.ic_launcher_round))
+                    .setAutoCancel(true).setContentIntent(contentIntent);
 
 
-        startForeground(NOTIFICACION_ID, notificacion.build());
-        PendingIntent intencionPendiente = PendingIntent.getActivity(
-                this, 0, new Intent(this, MainActivity.class), 0);
-        notificacion.setContentIntent(intencionPendiente);
+            getManager().notify(101, nb.build());
+
+        }
     }
+
+
+    private NotificationManager getManager() {
+        if (mManager == null) {
+            mManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        }
+        return mManager;
+    }
+
 }

@@ -139,7 +139,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_settings) {
             // launch settings activity
-            startActivity(new Intent(MainActivity.this, AjustesActivity.class));
+            Log.d("MainActivity - OptionsItemSelected", "Inicializando AjustesActivity");
+            startActivity(new Intent(context, AjustesActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

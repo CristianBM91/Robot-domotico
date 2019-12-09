@@ -3,21 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".presentacion.MainActivity">
-
+    android:layout_height="match_parent">
 
     <ImageButton
         android:id="@+id/onoffbtn"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="100dp"
         android:background="@drawable/redondo"
         android:contentDescription="onoff"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/limpiezabtn"
         app:srcCompat="@drawable/onoff" />
 
@@ -25,12 +22,12 @@
         android:id="@+id/onoffbtnactivo"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="100dp"
         android:background="@drawable/redondoactivo"
         android:contentDescription="onoffactivo"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+
+        app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/limpiezabtn"
         app:srcCompat="@drawable/onoff" />
@@ -41,9 +38,9 @@
         android:layout_height="86dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="50dp"
-        android:visibility="gone"
         android:background="@drawable/redondeado"
         android:contentDescription="vigi"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textovigilancia"
         app:srcCompat="@drawable/vigilancia2" />
@@ -58,6 +55,7 @@
         android:background="@drawable/redondeadoactivo"
         android:contentDescription="vigiactivo"
         android:visibility="gone"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/limpiezabtn"
         app:layout_constraintTop_toBottomOf="@+id/textovigilancia"
@@ -108,7 +106,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <TextView
@@ -116,16 +113,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="200dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="30dp"
         android:text="Modo vigilancia"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/vigilanciabtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
         android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.981"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <TextView
@@ -182,23 +178,14 @@
         app:layout_constraintTop_toBottomOf="@+id/limpiezabtn" />
 
     <ImageView
-        android:id="@+id/imgrp"
-        android:layout_width="220dp"
-        android:layout_height="220dp"
-        android:layout_marginStart="95dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="96dp"
-        android:layout_marginBottom="89dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/onoffbtnactivo" />
+        android:id="@+id/imgrp"
+        android:layout_width="300dp"
+        android:layout_height="220dp"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="20dp" />
-
+    </ImageView>
 </androidx.constraintlayout.widget.ConstraintLayout>
