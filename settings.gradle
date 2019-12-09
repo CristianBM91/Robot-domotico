@@ -1,2 +1,2 @@
-include ':app', ':iot', ':comun'
-rootProject.name='Robot Domótico'
+include ':app', ':ambos', ':iot'
+rootProject.name='RobotDomotico'

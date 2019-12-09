@@ -2,8 +2,48 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="preferencias_principal" >
-    <CheckBoxPreference
-        android:key="notif"
-        android:title="Notificaciones"
-        android:summary="Habilitar/Deshabilitar notificaciones"/>
+    <PreferenceCategory
+        android:key="general_category"
+        android:title="@string/general_categoria">
+        <SwitchPreference
+            android:key="noti"
+            android:title="@string/notificaciones"
+            android:summary="@string/notificaciones_summary"/>
+        <SwitchPreference
+            android:key="tema"
+            android:title="@string/tema"
+            android:summary="@string/tema_summary"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="robot_category"
+        android:title="@string/robot_categoria">
+        <EditTextPreference
+            android:defaultValue=" "
+            android:key="nombre_robot_preferencia"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/nombre_robot_summary" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="activar_recarga_automatica"
+            android:title="@string/activar_recarga_automatica"
+            android:summary="@string/activar_recarga_automatica_summary"/>
+        <ListPreference
+            android:defaultValue="20"
+            android:entries="@array/porcentajeBateriaComenzarRecargar"
+            android:entryValues="@array/porcentajeBateriaComenzarRecargarValores"
+            android:key="valoresComenzarRecarga"
+            android:title="@string/comenzar_recarga_preferencias_titulo"
+            android:summary="@string/comenzar_recarga_preferencias_summary"/>
+
+        <ListPreference
+            android:defaultValue="20"
+            android:entries="@array/porcentajeBateriaTerminarRecargar"
+            android:entryValues="@array/porcentajeBateriaTerminarRecargarValores"
+            android:key="valoresTerminarRecarga"
+            android:summary="@string/terminar_recarga_preferencias_summary"
+            android:title="@string/terminar_recarga_preferencias_titulo" />
+    </PreferenceCategory>
+
 </PreferenceScreen>

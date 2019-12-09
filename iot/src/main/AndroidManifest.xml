@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.iot">
+    package="com.naranjatradicionaldegandia.elias.iot">
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission
         android:name="com.google.android.things.permission.MANAGE_INPUT_DRIVERS"/>
