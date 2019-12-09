@@ -1,6 +1,7 @@
 package com.naranjatradicionaldegandia.elias.robotdomotico.ui.tools;
 
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,27 +16,15 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.naranjatradicionaldegandia.elias.robotdomotico.R;
 
-public class ToolsFragment extends PreferenceFragmentCompat {
+public class ToolsFragment extends PreferenceFragment {
 
-    private ToolsViewModel toolsViewModel;
-
-    @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.preferencias, rootKey);
+    @Override public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        addPreferencesFromResource(R.xml.preferencias);
     }
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        toolsViewModel =
-                ViewModelProviders.of(this).get(ToolsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_tools, container, false);
-        final TextView textView = root.findViewById(R.id.text_tools);
-        toolsViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;
-    }
+
+
+
+
 }

@@ -21,6 +21,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.naranjatradicionaldegandia.elias.ambos.Imagen;
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -37,6 +39,7 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     private View vista;
+    private StorageReference storageRef;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -45,7 +48,8 @@ public class HomeFragment extends Fragment {
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         actualizarImagen();
-    vista = root;
+        storageRef = FirebaseStorage.getInstance().getReference();
+        vista = root;
         // DEFINICIONES <---------------------------------------------------------------------------
 
         // boton limpieza
@@ -202,7 +206,22 @@ public class HomeFragment extends Fragment {
 
     } // ()
 
+void borrarImagen(final StorageReference imagenReferencia){
 
+    final Handler handler = new Handler();
+
+    Runnable runnable = new Runnable() {
+
+
+        public void run() {
+
+
+            imagenReferencia.delete();
+        }
+
+    };
+    handler.postDelayed(runnable, 1000);
+}
     public void actualizarImagen(){
 
         final Handler handler = new Handler();
@@ -210,7 +229,7 @@ public class HomeFragment extends Fragment {
 
 
             public void run() {
-            final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
                 final Task<QuerySnapshot> query = FirebaseFirestore.getInstance()
                         .collection("Grabaciones")
                         .orderBy("tiempo", Query.Direction.DESCENDING)
@@ -223,28 +242,16 @@ public class HomeFragment extends Fragment {
                                         Log.d("FIREBASE", document.getId() + " => " + document.getData());
 
                                         String url = document.getString("url");
+                                        String titulo = document.getString("titulo");
                                         ImageView imagen = getActivity().findViewById(R.id.imgrp);
-
+                                        StorageReference imagenReferencia = storageRef.child("imagenes/" + document.getId());
                                         if(HomeFragment.this.isVisible()) {
                                             Glide.with(getContext())
                                                     .load(url)
 
                                                     .into(imagen);
 
-                                            db.collection("Grabaciones").document(document.getId())
-                                                    .delete()
-                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                        @Override
-                                                        public void onSuccess(Void aVoid) {
-                                                            Log.d("FIREBASE", "DocumentSnapshot successfully deleted!");
-                                                        }
-                                                    })
-                                                    .addOnFailureListener(new OnFailureListener() {
-                                                        @Override
-                                                        public void onFailure(@NonNull Exception e) {
-                                                            Log.w("FIREBASE", "Error deleting document", e);
-                                                        }
-                                                    });
+                                                borrarImagen(imagenReferencia);
                                         }
 
                                     }
@@ -257,10 +264,10 @@ public class HomeFragment extends Fragment {
                             }
                         });
 
-                handler.postDelayed(this, 100);
+                handler.postDelayed(this, 500);
             }
         };
-        handler.postDelayed(runnable, 200);
+        handler.postDelayed(runnable, 600);
 
     }
     // ---------------------------------------------------------------------------------------------

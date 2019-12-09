@@ -78,6 +78,26 @@ public class Robot {
             Log.e("MQTT", "Error al publicar.", e);
         }
     }
+    public static void activarModoAutomatico(){
+
+        try {
+            Log.i("MQTT: ", "Conectando al broker " + broker);
+            client = new MqttClient(broker, clientId, new MemoryPersistence());
+            client.connect();
+        } catch (MqttException e) {
+            Log.e("MQTT", "Error al conectar.", e);
+        }
+        try {
+            Log.i("MQTT", "Enviando modo automatico ");
+            String mensaje = "0x0001";
+            MqttMessage message = new MqttMessage(mensaje.getBytes());
+            message.setQos(qos);
+            message.setRetained(false);
+            client.publish(topicRoot, message);
+        } catch (MqttException e) {
+            Log.e("MQTT", "Error al publicar.", e);
+        }
+    }
     public static void parar(){
 
         try {
