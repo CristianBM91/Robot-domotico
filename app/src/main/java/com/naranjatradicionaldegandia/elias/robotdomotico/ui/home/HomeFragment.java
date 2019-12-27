@@ -1,6 +1,11 @@
 package com.naranjatradicionaldegandia.elias.robotdomotico.ui.home;
 
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -10,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,15 +41,20 @@ import com.naranjatradicionaldegandia.elias.ambos.Robot;
 import com.naranjatradicionaldegandia.elias.robotdomotico.R;
 import com.naranjatradicionaldegandia.elias.robotdomotico.ServicioOn;
 
+import static android.content.Context.SENSOR_SERVICE;
+import static androidx.core.content.ContextCompat.getSystemService;
+
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     private View vista;
     private StorageReference storageRef;
-
+    TextView textX, textY, textZ;
+    SensorManager sensorManager;
+    Sensor sensor;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+                                            ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -51,7 +62,12 @@ public class HomeFragment extends Fragment {
         storageRef = FirebaseStorage.getInstance().getReference();
         vista = root;
         // DEFINICIONES <---------------------------------------------------------------------------
+        sensorManager = (SensorManager) getContext().getSystemService(SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
+        textX = (TextView) vista.findViewById(R.id.textX);
+        textY = (TextView) vista.findViewById(R.id.textY);
+        textZ = (TextView) vista.findViewById(R.id.textZ);
         // boton limpieza
         ImageButton limpieza = vista.findViewById(R.id.limpiezabtn);
         ImageButton limpiezaactivo =  vista.findViewById(R.id.limpiezabtnactivo);
@@ -104,6 +120,45 @@ public class HomeFragment extends Fragment {
         // onCreate
         return root;
     }
+    public void onResume() {
+        super.onResume();
+        sensorManager.registerListener(gyroListener, sensor,
+                SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    public void onStop() {
+        super.onStop();
+        sensorManager.unregisterListener(gyroListener);
+    }
+
+    public SensorEventListener gyroListener = new SensorEventListener() {
+        public void onAccuracyChanged(Sensor sensor, int acc) { }
+
+        public void onSensorChanged(SensorEvent event) {
+            float x = event.values[0];
+
+            float y = event.values[1];
+            float z = event.values[2];
+//comentar esto si crea bucle
+            textX.setText("X : " + (int)x + " rad/s");
+            textY.setText("Y : " + (int)y + " rad/s");
+            textZ.setText("Z : " + (int)z + " rad/s");
+            if((int)z>=4){
+                Robot.girarIzquierda();
+
+
+            } else
+            if((int)z>=-4){
+                Robot.girarDerecha();
+
+
+            }
+
+
+        }
+    };
+
+
 
 
     //=========================================================>
@@ -272,12 +327,12 @@ public class HomeFragment extends Fragment {
     }
     // ---------------------------------------------------------------------------------------------
     // --------------------- Pulsar encendido ------------------------------------------------------
-    void pulsarEncendido (final ImageButton onoff, final ImageButton onoffactivo, final int[] contadorOnoff, final boolean[] activado, final boolean[] limpiar, final boolean[] vigilar, final TextView limpiando, final TextView vigilando, final TextView limpiandovigilando){
+                void pulsarEncendido (final ImageButton onoff, final ImageButton onoffactivo, final int[] contadorOnoff, final boolean[] activado, final boolean[] limpiar, final boolean[] vigilar, final TextView limpiando, final TextView vigilando, final TextView limpiandovigilando){
 
-        // ACCIONES AL CLICKAR BOTON ON/OFF <--------------------------------------------------
-        onoff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                    // ACCIONES AL CLICKAR BOTON ON/OFF <--------------------------------------------------
+                    onoff.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
                 if (limpiar[0] || vigilar[0]) {
                     contadorOnoff[0] = contadorOnoff[0] + 1;
