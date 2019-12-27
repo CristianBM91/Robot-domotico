@@ -7,6 +7,19 @@
     tools:context=".presentacion.MainActivity">
 
 
+        <ImageButton
+            android:id="@+id/onoffbtn"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/redondo"
+            android:contentDescription="onoff"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/limpiezabtn"
+            app:srcCompat="@drawable/onoff" />
+
         <TextView
             android:id="@+id/textZ"
             android:layout_width="wrap_content"
@@ -46,6 +59,20 @@
             app:layout_constraintBottom_toBottomOf="@+id/imgrp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageButton
+            android:id="@+id/onoffbtnactivo"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/redondoactivo"
+            android:contentDescription="onoffactivo"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/limpiezabtn"
+            app:srcCompat="@drawable/onoff" />
 
         <ImageButton
             android:id="@+id/vigilanciabtn"
@@ -194,11 +221,13 @@
             android:layout_width="220dp"
             android:layout_height="220dp"
             android:layout_marginStart="95dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="96dp"
             android:layout_marginBottom="89dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/onoffbtnactivo" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
