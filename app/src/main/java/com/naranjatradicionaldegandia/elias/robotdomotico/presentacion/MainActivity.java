@@ -1,16 +1,39 @@
 package com.naranjatradicionaldegandia.elias.robotdomotico.presentacion;
 
+import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -19,9 +42,15 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.naranjatradicionaldegandia.elias.robotdomotico.GeneratePictureStyleNotification;
 import com.naranjatradicionaldegandia.elias.robotdomotico.R;
+import com.naranjatradicionaldegandia.elias.robotdomotico.ui.home.HomeFragment;
 import com.naranjatradicionaldegandia.elias.robotdomotico.usuario.Usuarios;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -30,35 +59,135 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import static com.naranjatradicionaldegandia.elias.ambos.Mqtt.broker;
+import static com.naranjatradicionaldegandia.elias.ambos.Mqtt.clientApp;
 import static com.naranjatradicionaldegandia.elias.ambos.Mqtt.clientId;
 import static com.naranjatradicionaldegandia.elias.ambos.Mqtt.qos;
 import static com.naranjatradicionaldegandia.elias.ambos.Mqtt.topicRoot;
+import static java.lang.Integer.valueOf;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String CHANNEL_ID = "666";
     public StorageReference storageRef;
     private AppBarConfiguration mAppBarConfiguration;
-    public TextView correo;
+    public TextView textoModo;
     public static MqttClient client;
     private Context context;
+    SharedPreferences pref;
+    public static boolean modoAmenaza = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = getBaseContext();
-
+        pref =
+                PreferenceManager.getDefaultSharedPreferences(this);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        //comprobador de modos por si vigilancia está activo
+
+
+
         try {
             Log.i("MQTT: ", "Conectando al broker " + broker);
-            client = new MqttClient(broker, clientId, new MemoryPersistence());
+            client = new MqttClient(broker, clientApp, new MemoryPersistence());
             client.connect();
+            client.subscribe(topicRoot+"modo", qos);
+            client.setCallback(new MqttCallback() {
+                @Override
+                public void connectionLost(Throwable cause) {
+                     System.out.println("MQTT Connection was lost!" + cause);
+                }
+
+                @Override
+                public void messageArrived(String topic, MqttMessage message) throws Exception {
+                    String mensaje =  new String(message.getPayload());
+                    System.out.println(" MQTT Message Arrived!: " + topic + ": " + mensaje);
+                    if(mensaje.contains("0x002")){
+                        textoModo = (TextView)findViewById(R.id.textoModo) ;
+
+
+
+                        if(modoAmenaza){
+                            Log.d("MQTT Mensaje Recibido", "Ejecutando Amenaza Detectada");
+                            final Task<QuerySnapshot> query = FirebaseFirestore.getInstance()
+                                    .collection("Grabaciones")
+                                    .orderBy("tiempo", Query.Direction.DESCENDING)
+                                    .limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                            if (task.isSuccessful()) {
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    Log.d("FIREBASE", document.getId() + " => " + document.getData());
+
+                                                    final String url = document.getString("url");
+
+                                                    Bitmap a;
+
+
+                                                    Glide.with(context)
+                                                            .asBitmap()
+                                                            .load(url)
+                                                            .into(new CustomTarget<Bitmap>() {
+                                                                @Override
+                                                                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                                    Log.d("GLIDE", "Imagen amenaza lista");
+                                                                    if(pref.getBoolean("noti", true)){
+                                                                        createNotification("Se ha detectado una posible amenaza", "¡Amenaza detectada!", resource, url);
+                                                                    }
+
+                                                                }
+
+                                                                @Override
+                                                                public void onLoadCleared(@Nullable Drawable placeholder) {
+                                                                }
+                                                            });
+
+
+
+
+                                                }
+                                            } else {
+                                                Log.d("FIREBASE", "Error al cargar imagenes: ", task.getException());
+                                            }
+
+
+
+                                        }
+                                    });
+                        }
+
+
+//Mensaje de activacion de modo amenaza
+                    } else if(mensaje.contains("0x0002")){
+                        Log.d("MQTT", "Mensaje de activación modo amenaza recibido");
+                        modoAmenaza = true;
+
+
+                    }else{
+                        Log.d("MQTT", "No se ha reconocido el mensaje.");
+                    }
+                }
+
+                @Override
+                public void deliveryComplete(IMqttDeliveryToken token) {
+                    System.out.println("MQTT Delivery Complete!");
+                }
+            });
+
         } catch (MqttException e) {
             Log.e("MQTT", "Error al conectar.", e);
         }
@@ -74,7 +203,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
+        try {
+            Log.i("MQTT", "Publicando mensaje: " + "el correo " + user.getEmail());
+            String mensaje = user.getEmail();
+            MqttMessage message = new MqttMessage(mensaje.getBytes());
+            message.setQos(qos);
+            message.setRetained(false);
+            client.publish(topicRoot+"correo", message);
+        } catch (MqttException e) {
+            Log.e("MQTT", "Error al publicar.", e);
+        }
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -124,8 +262,106 @@ public class MainActivity extends AppCompatActivity {
             correo.setText(email);
 
         }
+
+
     }
 
+    private NotificationManager notificationManager;
+    static final int NOTIFICACION_ID = 1;
+    private static final String TAG = "SERVICIO ON";
+    NotificationChannel mChannel;
+    private NotificationManager mManager;
+    public  boolean isPermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.CALL_PHONE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v("PERMISOS","Permission is granted");
+                return true;
+            } else {
+
+                Log.v("TAG","Permission is revoked");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            Log.v("TAG","Permission is granted");
+            return true;
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+
+            case 1: {
+
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getApplicationContext(), "Permiso dado", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Permiso denegado", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+
+
+    public void createNotification(String msg, String title, Bitmap imagen, String url) {
+        Intent intent = null;
+
+        intent = new Intent(this, AmenazaActivity.class);
+
+
+        intent.putExtra("url", url);
+                mManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel androidChannel = new NotificationChannel(CHANNEL_ID,
+                    title, NotificationManager.IMPORTANCE_DEFAULT);
+            // Sets whether notifications posted to this channel should display notification lights
+            androidChannel.enableLights(true);
+            // Sets whether notification posted to this channel should vibrate.
+            androidChannel.enableVibration(true);
+            // Sets the notification light color for notifications posted to this channel
+            androidChannel.setLightColor(Color.GREEN);
+
+            // Sets whether notifications posted to this channel appear on the lockscreen or not
+            androidChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+
+            mManager.createNotificationChannel(androidChannel);
+            Notification.Builder nb = new Notification.Builder(getApplicationContext(), CHANNEL_ID)
+                    .setContentTitle(title)
+                    .setContentText(msg)
+                    .setTicker(title)
+                    .setShowWhen(true)
+                    .setStyle(new Notification.BigPictureStyle().bigPicture(imagen))
+                    .setSmallIcon(R.mipmap.ic_launcher_foreground)
+                    .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
+                            R.mipmap.ic_launcher_round))
+                    .setAutoCancel(true).setContentIntent(contentIntent);
+
+            if(isPermissionGranted()) {
+                String numero = pref.getString("emergencia", "112");
+                Intent llamar_intent = new Intent(Intent.ACTION_CALL,
+                        Uri.parse("tel:"+ numero));
+                PendingIntent llamar = PendingIntent.getActivity(this, 0, llamar_intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                nb.addAction(R.drawable.vigilancia, "LLAMAR",llamar);
+            }
+            mManager.notify(101, nb.build());
+
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

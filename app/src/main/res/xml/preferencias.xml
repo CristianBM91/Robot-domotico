@@ -14,6 +14,18 @@
             android:key="tema"
             android:title="@string/tema"
             android:summary="@string/tema_summary"/>
+        <SwitchPreference
+            android:key="voces"
+            android:defaultValue="true"
+            android:title="@string/voces_titulo"
+            android:summary="@string/voces_summary"/>
+        <EditTextPreference
+            android:defaultValue="112"
+            android:key="numero_emergencia"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="@string/emergencia_summary"
+            android:title="@string/numero_emergencia_titulo" />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="robot_category"
@@ -28,10 +40,12 @@
         <SwitchPreference
             android:defaultValue="false"
             android:key="activar_recarga_automatica"
+
             android:title="@string/activar_recarga_automatica"
             android:summary="@string/activar_recarga_automatica_summary"/>
         <ListPreference
             android:defaultValue="20"
+            android:dependency="activar_recarga_automatica"
             android:entries="@array/porcentajeBateriaComenzarRecargar"
             android:entryValues="@array/porcentajeBateriaComenzarRecargarValores"
             android:key="valoresComenzarRecarga"
@@ -41,6 +55,7 @@
         <ListPreference
             android:defaultValue="20"
             android:entries="@array/porcentajeBateriaTerminarRecargar"
+            android:dependency="activar_recarga_automatica"
             android:entryValues="@array/porcentajeBateriaTerminarRecargarValores"
             android:key="valoresTerminarRecarga"
             android:summary="@string/terminar_recarga_preferencias_summary"

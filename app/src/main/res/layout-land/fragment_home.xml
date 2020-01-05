@@ -5,230 +5,192 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/onoffbtn"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:background="@drawable/redondo"
-        android:contentDescription="onoff"
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="Cambiar de Estado"
         android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/radioGroup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/limpiezabtn"
-        app:srcCompat="@drawable/onoff" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageButton
-        android:id="@+id/onoffbtnactivo"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:background="@drawable/redondoactivo"
-        android:contentDescription="onoffactivo"
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="207dp"
+        android:layout_height="180dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="36dp"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintHorizontal_bias="0.499"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/limpiezabtn"
-        app:srcCompat="@drawable/onoff" />
-
-    <ImageButton
-        android:id="@+id/vigilanciabtn"
-        android:layout_width="86dp"
-        android:layout_height="86dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="50dp"
-        android:background="@drawable/redondeado"
-        android:contentDescription="vigi"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textovigilancia"
-        app:srcCompat="@drawable/vigilancia2" />
-
-    <ImageButton
-        android:id="@+id/vigilanciabtnactivo"
-        android:layout_width="86dp"
-        android:layout_height="86dp"
-        android:layout_marginStart="139dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="50dp"
-        android:background="@drawable/redondeadoactivo"
-        android:contentDescription="vigiactivo"
-        android:visibility="gone"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/limpiezabtn"
-        app:layout_constraintTop_toBottomOf="@+id/textovigilancia"
-        app:srcCompat="@drawable/vigilancia2" />
-
-    <ImageButton
-        android:id="@+id/limpiezabtn"
-        android:layout_width="86dp"
-        android:layout_height="86dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/redondeado"
-        android:contentDescription="limpi"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textolimpieza"
-        app:srcCompat="@drawable/limpieza2" />
-
-    <ImageButton
-        android:id="@+id/limpiezabtnactivo"
-        android:layout_width="86dp"
-        android:layout_height="86dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="139dp"
-        android:background="@drawable/redondeadoactivo"
-        android:contentDescription="limpiactivo"
-        android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@+id/vigilanciabtn"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/limpieza2" />
-
-    <TextView
-        android:id="@+id/textolimpieza"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="200dp"
-        android:layout_marginBottom="84dp"
-        android:text="Modo limpieza"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/limpiezabtnactivo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-    <TextView
-        android:id="@+id/textovigilancia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="200dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="30dp"
-        android:text="Modo vigilancia"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.981"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-    <TextView
-        android:id="@+id/textolimpiando"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="Limpiando"
-        android:textColor="#00C853"
-        android:textSize="24sp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/limpiezabtn" />
-
-    <TextView
-        android:id="@+id/textovigilando"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="Vigilando"
-        android:textColor="#00C853"
-        android:textSize="24sp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/limpiezabtn" />
-
-    <TextView
-        android:id="@+id/textotodo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="Limpiando / Vigilando"
-        android:textColor="#00C853"
-        android:textSize="24sp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/limpiezabtn" />
-
-    <TextView
-        android:id="@+id/textorecargando"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:contentDescription="recargando"
-        android:text="Recargando..."
-        android:textColor="#D50000"
-        android:textSize="24sp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/limpiezabtn" />
-
-    <ImageView
-        android:id="@+id/imgrp"
-        android:layout_width="300dp"
-        android:layout_height="220dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
-    </ImageView>
+        <RadioButton
+            android:id="@+id/rb_automatico"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Modo Automático" />
 
-    <TextView
-        android:id="@+id/textX"
-        android:layout_width="242dp"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textZ"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/textY"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="0dp" />
+        <RadioButton
+            android:id="@+id/rb_manual"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Modo Manual" />
 
-    <TextView
-        android:id="@+id/textY"
-        android:layout_width="242dp"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textX"
-        app:layout_constraintHorizontal_bias="0.313"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="0dp" />
+        <RadioButton
+            android:id="@+id/rb_vigilancia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Modo Vigilancia" />
+    </RadioGroup>
 
     <TextView
         android:id="@+id/textZ"
-        android:layout_width="243dp"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/textX"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="0dp" />
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:barrierDirection="top" />
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:text=""
+        android:textSize="30sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/textY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textX"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:text=""
+        android:textSize="30sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/imgrp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="252dp"
+        android:layout_marginBottom="380dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgrp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.499"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_menu_camera" />
+
+    <ImageView
+        android:id="@+id/imgrp"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="60dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textoModo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/imgrp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_estado"
+        tools:layout_editor_absoluteX="176dp" />
+
+    <TextView
+        android:id="@+id/txt_estado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="El robot se encuentra actualmenente..."
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/imgrp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.631" />
+
+    <TextView
+        android:id="@+id/textY2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:text=""
+        android:textSize="30sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/textX"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/desactivarModoManual"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="321dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="322dp"
+        android:layout_marginBottom="111dp"
+        android:text="DESACTIVAR MODO MANUAL"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgrp" />
+
+    <ImageButton
+        android:id="@+id/botonIzquierda"
+        style="@null"
+        android:layout_width="297dp"
+        android:layout_height="113dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="230dp"
+        android:background="@null"
+        android:orientation="vertical"
+        android:rotation="270"
+        android:scaleType="fitCenter"
+        android:tint="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imgrp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/dobleflecha" />
+
+    <ImageButton
+        android:id="@+id/botonDerecha"
+        style="@null"
+        android:layout_width="297dp"
+        android:layout_height="113dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginBottom="230dp"
+        android:adjustViewBounds="false"
+        android:background="@null"
+        android:cropToPadding="false"
+        android:orientation="vertical"
+        android:rotation="90"
+        android:scaleType="fitCenter"
+        android:tint="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imgrp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/dobleflecha" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

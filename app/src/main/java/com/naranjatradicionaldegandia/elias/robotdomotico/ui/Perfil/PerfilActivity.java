@@ -4,13 +4,20 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.naranjatradicionaldegandia.elias.robotdomotico.presentacion.MainActivity;
 import com.naranjatradicionaldegandia.elias.robotdomotico.R;
 import com.naranjatradicionaldegandia.elias.robotdomotico.usuario.Usuarios;
@@ -28,6 +35,7 @@ public class PerfilActivity extends Activity {
     FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
     PhoneAuthProvider mCallbacks;
     private Context context;
+    String nombre_robot;
     private String antiguoTelefono;
 
     public void endOperation(){
@@ -45,7 +53,7 @@ public class PerfilActivity extends Activity {
             Bundle e = getIntent().getExtras();
             antiguoTelefono = e.getString("tel");
         }
-
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         context = getBaseContext();
         guardarCambios = (Button) this.findViewById(R.id.btn_guardar);
@@ -53,9 +61,26 @@ public class PerfilActivity extends Activity {
         valorNombre  = (EditText) this.findViewById(R.id.nameText);
         valorCorreo  = (EditText) this.findViewById(R.id.mailText);
         valorTelefono = (EditText) this.findViewById(R.id.phoneText);
+
+
         Usuarios.getNombre(usuario, valorNombre);
         valorCorreo.setText(usuario.getEmail());
         Usuarios.getTelefono(usuario, valorTelefono);
+
+        db.collection("usuarios").document(usuario.getEmail()).get()
+                .addOnCompleteListener(
+                        new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task){
+                                if (task.isSuccessful()) {
+                                     nombre_robot = task.getResult().getString("robot");
+
+                                    Log.d("Firestore", "nombre robot:" + nombre_robot);
+                                } else {
+                                    Log.e("Firestore", "Error al leer", task.getException());
+                                }
+                            }
+                        });
 
         guardarCambios.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -73,7 +98,7 @@ public class PerfilActivity extends Activity {
 
                 }
 
-                actualizarUsuario(usuario, nombre, correo, telefono, "");
+                actualizarUsuario(usuario, nombre, correo, telefono, nombre_robot);
 
                 endOperation();
             }

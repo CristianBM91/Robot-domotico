@@ -17,14 +17,20 @@ import android.widget.ImageView;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.naranjatradicionaldegandia.elias.ambos.Dato;
 import com.naranjatradicionaldegandia.elias.ambos.DatosFirestore;
+import com.naranjatradicionaldegandia.elias.ambos.Estado;
 import com.naranjatradicionaldegandia.elias.ambos.Imagen;
 import com.naranjatradicionaldegandia.elias.ambos.Mqtt;
 
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -32,7 +38,9 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Map;
 import java.util.UUID;
 
 import static android.content.ContentValues.TAG;
@@ -64,10 +72,16 @@ import static com.naranjatradicionaldegandia.elias.ambos.Mqtt.topicRoot;
 public class MainActivity extends AppCompatActivity {
     private DoorbellCamera mCamera;
     private Handler mCameraHandler;
+    public static Dato dato;
+    public static Estado estado;
     private HandlerThread mCameraThread;
     private Handler temporizadorHandler = new Handler();
     public static DatosFirestore datos;
     public static MqttClient client;
+    private Imagen imagen;
+    public static String correo = "elies1324@gmail.com";
+    private Handler mCloudHandler;
+    private HandlerThread mCloudThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,59 +98,61 @@ public class MainActivity extends AppCompatActivity {
         mCamera = DoorbellCamera.getInstance();
         mCamera.initializeCamera(this, mCameraHandler, mOnImageAvailableListener);
         temporizadorHandler.postDelayed(tomaFoto, 3 * 1000); //llamamos en 3 seg.
-
+        mCloudThread = new HandlerThread("CloudThread");
+        mCloudThread.start();
+        mCloudHandler = new Handler(mCloudThread.getLooper());
         //Arduino UART
-        Log.i(TAG, "Lista de UART disponibles: " + ArduinoUart.disponibles());
-        ArduinoUart uart = new ArduinoUart("UART0", 115200);
-        Log.d(TAG, "Mandado a Arduino: H");
-        uart.escribir("H");
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            Log.w(TAG, "Error en sleep()", e);
-        }
-        String s = uart.leer();
-        Log.d(TAG, "Recibido de Arduino: " + s);
 
+
+
+
+        imagen = new Imagen();
         //mqtt
         //MQTT
         try {
             Log.i(TAG, "Conectando al broker " + broker);
-            client = new MqttClient(broker, clientId, new MemoryPersistence());
+            client = new MqttClient(broker, "Test21", new MemoryPersistence());
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(true);
-            connOpts.setKeepAliveInterval(60);
-            connOpts.setWill(topicRoot+"WillTopic", "App desconectada".getBytes(),
+
+            MyCallback callback = new MyCallback();
+            client.setCallback(callback);
+            connOpts.setKeepAliveInterval(300);
+            connOpts.setWill(topicRoot + "WillTopic", "App desconectada".getBytes(),
                     qos, false);
             client.connect(connOpts);
+
+
         } catch (MqttException e) {
             Log.e(TAG, "Error al conectar.", e);
         }
 
-        try {
-            Log.i(TAG, "Suscrito a " + topicRoot+"POWER");
-            client.subscribe(topicRoot+"POWER", qos);
-            client.setCallback((MqttCallback) this);
-        } catch (MqttException e) {
-            Log.e(TAG, "Error al suscribir.", e);
-        }
+
+
+
+
+
 
         try {
-            Log.i(TAG, "Publicando mensaje: " + "hola");
-            MqttMessage message = new MqttMessage("hola".getBytes());
+            Log.i(TAG, "Publicando mensaje: " + "hola desde rp");
+            MqttMessage message = new MqttMessage("hola desde rp".getBytes());
             message.setQos(qos);
             message.setRetained(false);
-            client.publish(topicRoot+"Raspberry Pi", message);
+            client.publish(topicRoot + "Raspberry Pi", message);
         } catch (MqttException e) {
             Log.e(TAG, "Error al publicar.", e);
         }
         Log.v("TAG", "Publicando en MQTT");
 
+
     }
 
-    static void registrarImagen(String titulo, String url) {
+    void registrarImagen(String titulo, String url, String correo) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Imagen imagen = new Imagen(titulo, url);
+        imagen.setTitulo(titulo);
+        imagen.setUrl(url);
+        imagen.setTiempo();
+        imagen.setCorreo(correo);
         db.collection("Grabaciones").document().set(imagen);
     }
 
@@ -158,23 +174,20 @@ public class MainActivity extends AppCompatActivity {
                     final byte[] imageBytes = new byte[imageBuf.remaining()];
                     imageBuf.get(imageBytes);
                     image.close();
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    annotateImage(db.collection("Grabaciones"), imageBytes);
                     onPictureTaken(imageBytes);
                 }
             };
 
+
     private void onPictureTaken(final byte[] imageBytes) {
         if (imageBytes != null) {
             String nombreFichero = UUID.randomUUID().toString();
-            subirBytes(imageBytes, "imagenes/" + nombreFichero);
+            subirBytes(imageBytes, "imagenes/" + correo + "/" + nombreFichero);
             final Bitmap bitmap = BitmapFactory.decodeByteArray(
                     imageBytes, 0, imageBytes.length);
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ImageView imageView = findViewById(R.id.imageView);
-                    imageView.setImageBitmap(bitmap);
-                }
-            });
+
         }
     }
 
@@ -196,12 +209,33 @@ public class MainActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Uri downloadUri = task.getResult();
                     Log.e("Almacenamiento", "URL: " + downloadUri.toString());
-                    registrarImagen("Subida por R.P.", downloadUri.toString());
+                    registrarImagen(correo, downloadUri.toString(), correo);
                 } else {
                     Log.e("Almacenamiento", "ERROR: subiendo bytes");
                 }
             }
         });
     }
+
+
+    private void annotateImage(final CollectionReference ref, final byte[] imageBytes) {
+        mCloudHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "sending image to cloud vision");
+                // annotate image by uploading to Cloud Vision API
+                try {
+                    Map<String, Float> annotations = CloudVisionUtils.annotateImage(imageBytes);
+                    Log.d(TAG, "cloud vision annotations:" + annotations);
+                    if (annotations != null) {
+                        imagen.setAnotaciones(annotations);
+                    }
+                } catch (IOException e) {
+                    Log.e(TAG, "Cloud Vison API error: ", e);
+                }
+            }
+        });
+    }
+
 
 }

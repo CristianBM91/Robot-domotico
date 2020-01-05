@@ -1,20 +1,22 @@
 package com.naranjatradicionaldegandia.elias.ambos;
 
+import java.util.Date;
+
 public class Dato {
     private long fecha;
-    private TipoDato tipo;
+    private String tipo;
     private String cuerpo;
 
 
-    public Dato(TipoDato tipo, String cuerpo) {
-        fecha = System.currentTimeMillis();
+    public Dato(String tipo, String cuerpo) {
+        fecha = new Date().getTime();
         this.tipo = tipo;
         this.cuerpo = cuerpo;
     }
 
     public Dato() {
-        fecha = System.currentTimeMillis();
-        tipo = TipoDato.OTRO;
+        fecha = new Date().getTime();
+        tipo = "otro";
     }
 
     public long getFecha() {
@@ -25,11 +27,11 @@ public class Dato {
         this.fecha = fecha;
     }
 
-    public TipoDato getTipo() {
+    public String getTipo() {
         return tipo;
     }
 
-    public void setTipo(TipoDato tipo) {
+    public void setTipo(String tipo) {
         this.tipo = tipo;
     }
 

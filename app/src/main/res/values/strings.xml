@@ -145,4 +145,8 @@
     <string name="activar_recarga_automatica">Activa la recarga automática</string>
     <string name="activar_recarga_automatica_summary">Activando este modo, el robot se encargará automáticamente de la carga de la batería</string>
     <string name="nombre_del_robot_default">Sin nombre</string>
+    <string name="voces_titulo">Voz y mensajes del robot</string>
+    <string name="voces_summary">Activa o desactiva la voz del robot. Incluyendo su introducción, selector de modos y otros consejos.</string>
+    <string name="numero_emergencia_titulo">Número de emergencia</string>
+    <string name="emergencia_summary">Introduce el número al cual se realizará una llamada en caso de emergencia</string>
 </resources>

@@ -28,6 +28,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FileDownloadTask;
@@ -48,7 +50,7 @@ public class GalleryFragment extends Fragment {
     private GalleryViewModel galleryViewModel;
     private Context context;
     private Imagen imagen;
-
+    FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -72,7 +74,7 @@ public class GalleryFragment extends Fragment {
         view = this.getView();
         RecyclerView recyclerView = root.findViewById(R.id.recyclerView);
         Query query = FirebaseFirestore.getInstance()
-                .collection("Grabaciones")
+                .collection("Grabaciones").whereEqualTo("titulo", usuario.getEmail())
                 .orderBy("tiempo", Query.Direction.DESCENDING)
                 .limit(50);
         FirestoreRecyclerOptions<Imagen> opciones = new FirestoreRecyclerOptions
@@ -91,7 +93,7 @@ public class GalleryFragment extends Fragment {
 
 
 
-
+//Creo que no se usa ----V
 
     @Override
     public void onActivityResult(final int requestCode,
@@ -100,7 +102,7 @@ public class GalleryFragment extends Fragment {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == 1234) {
                 String nombreFichero = UUID.randomUUID().toString();
-                subirFichero(data.getData(), "imagenes/" + nombreFichero);
+                subirFichero(data.getData(), "imagenes/"+ usuario.getEmail() +"/" + nombreFichero);
                 try {
                     Bitmap bitmap = getBitmap(context.getContentResolver(), data.getData());
                     ImageView imageView = this.getView().findViewById(R.id.imageView);

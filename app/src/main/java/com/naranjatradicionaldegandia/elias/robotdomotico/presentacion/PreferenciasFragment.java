@@ -36,22 +36,10 @@ public class PreferenciasFragment extends PreferenceFragment {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferencias);
         //notificaciones
-        final SwitchPreference notificaciones = (SwitchPreference) findPreference("noti");
-        notificaciones.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                boolean a;
-                if(Boolean.getBoolean(newValue.toString())){
-                    notificacionesModoAmenazaActivadas = true;
-                } else {
-                    notificacionesModoAmenazaActivadas = false;
-                }
-                return false;
-            }
-        });
+
         //Tema
-        final SwitchPreference tema = (SwitchPreference) findPreference("tema");
-        notificaciones.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+       /* final SwitchPreference tema = (SwitchPreference) findPreference("tema");
+        tema.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 boolean a;
@@ -63,6 +51,22 @@ public class PreferenciasFragment extends PreferenceFragment {
                     getActivity().setTheme(R.style.AppThemeLight);
 
                 }
+                return false;
+            }
+        });
+
+       */
+        //numero emergencia
+        final EditTextPreference emergencia = (EditTextPreference) findPreference("numero_emergencia");
+        final String regex = "[0-9]+";
+        emergencia.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    if(Pattern.matches(regex, newValue.toString())){
+                        Toast.makeText(getActivity(), "El número de emergencia se ha actualizado con éxito",
+                                Toast.LENGTH_LONG).show();
+                        return true;
+                    }
                 return false;
             }
         });
@@ -114,7 +118,7 @@ public class PreferenciasFragment extends PreferenceFragment {
                                     Toast.LENGTH_LONG).show();
 
                         Usuarios.addNombreRobot(usuario, nombre);
-                            return false;
+                            return true;
                     }
 
 

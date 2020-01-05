@@ -1,8 +1,10 @@
 package com.naranjatradicionaldegandia.elias.robotdomotico.presentacion;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -36,6 +38,7 @@ import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.naranjatradicionaldegandia.elias.robotdomotico.R;
+import com.naranjatradicionaldegandia.elias.robotdomotico.usuario.Usuarios;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,11 +50,12 @@ public class SesionActivity extends AppCompatActivity {
     private static final String TAG = "INICIO SESION";
     List<AuthUI.IdpConfig> providers;
     private static final int MY_REQUEST_CODE = 777;
-
+    public static boolean appLanzada;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle e = getIntent().getExtras();
+
        // if(e.getString("verificarNumero").equals("si")){
 
 
@@ -78,6 +82,8 @@ public class SesionActivity extends AppCompatActivity {
         @Override
         protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
             super.onActivityResult(requestCode, resultCode, data);
+            SharedPreferences pref =
+                    PreferenceManager.getDefaultSharedPreferences(this);
             if (requestCode == MY_REQUEST_CODE) {
                 IdpResponse response = IdpResponse.fromResultIntent(data);
                 if (resultCode == RESULT_OK) {
@@ -90,6 +96,10 @@ public class SesionActivity extends AppCompatActivity {
                     } else {
                         // This is an existing user, show them a welcome back screen.
                         Toast.makeText(this, "Bienvenido de nuevo, " + user.getDisplayName(), Toast.LENGTH_LONG).show();
+                        if(pref.getBoolean("voces", true)){
+                            Usuarios.decirNombreRobot(user, this);
+                        }
+
                     }
 
                     startActivity(new Intent(this, MainActivity.class));
