@@ -34,6 +34,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.jsibbold.zoomage.ZoomageView;
 import com.naranjatradicionaldegandia.elias.robotdomotico.R;
 
@@ -66,7 +70,7 @@ public class AmenazaActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if(isPermissionGranted()) {
-                    String numero = pref.getString("emergencia", "112");
+                    String numero = pref.getString("numero_emergencia", "112");
                     Intent intent = new Intent(Intent.ACTION_CALL,
                             Uri.parse("tel:"+ numero));
                     startActivity(intent);
@@ -84,7 +88,11 @@ public class AmenazaActivity extends Activity {
                                 Log.d("FIREBASE Amenaza", document.getId() + " => " + document.getData());
 
                                 final String url = document.getString("url");
-                                txt.setText(document.get("anotaciones").toString());
+                                final String regex = "[0-9]+";
+                                String uglyJSONString = document.get("anotaciones").toString();
+
+
+                                txt.setText(uglyJSONString);
 
 
 

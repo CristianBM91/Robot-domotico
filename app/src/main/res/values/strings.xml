@@ -16,7 +16,7 @@
     <string name="menu_tools">Preferencias</string>
     <string name="menu_share">Mi perfil</string>
     <string name="menu_send">Contacto</string>
-    <string name="action_robot">Estado robot</string>
+    <string name="action_robot">Ajustes iniciales</string>
     <string name="boton_correo">informacion@robomovil.com</string>
     <string name="boton_llamar">Llamar</string>
     <string name="info_titulo">Más información sobre nosotros</string>
@@ -149,4 +149,7 @@
     <string name="voces_summary">Activa o desactiva la voz del robot. Incluyendo su introducción, selector de modos y otros consejos.</string>
     <string name="numero_emergencia_titulo">Número de emergencia</string>
     <string name="emergencia_summary">Introduce el número al cual se realizará una llamada en caso de emergencia</string>
+    <string name="configrp_titulo">Inicio automático</string>
+    <string name="configrp_summary">Activa el inicio automático de la aplicación, saltándose el modo de configuración del robot. También puede ser usado para cambiar de Red WiFi o cuando hay problemas de sincronización</string>
+    <string name="escanear">Pulsa en escanear para comenzar</string>
 </resources>

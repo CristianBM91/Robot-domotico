@@ -1,6 +1,7 @@
 package com.naranjatradicionaldegandia.elias.robotdomotico.ui.contacto;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -44,6 +45,7 @@ public class ContactoFragment extends Fragment {
                 textView.setText(s);
             }
         });
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
         final EditText your_name        = (EditText) root.findViewById(R.id.your_name);
         final EditText your_email       = (EditText) root.findViewById(R.id.your_email);

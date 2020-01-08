@@ -1,6 +1,7 @@
 package com.naranjatradicionaldegandia.elias.robotdomotico.ui.Perfil;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -41,7 +42,7 @@ public class PerfilFragment extends Fragment {
         String uid = usuario.getUid();
         FirebaseFirestore ref = FirebaseFirestore.getInstance();
 
-
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         TextView nombre = (TextView) vista.findViewById(R.id.nombre);
         TextView correo = (TextView) vista.findViewById(R.id.correo);
         correo.setText(usuario.getEmail());

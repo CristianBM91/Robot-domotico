@@ -5,6 +5,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.media.AudioAttributes;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,7 +35,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -48,9 +49,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.naranjatradicionaldegandia.elias.robotdomotico.GeneratePictureStyleNotification;
 import com.naranjatradicionaldegandia.elias.robotdomotico.R;
-import com.naranjatradicionaldegandia.elias.robotdomotico.ui.home.HomeFragment;
 import com.naranjatradicionaldegandia.elias.robotdomotico.usuario.Usuarios;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -59,9 +58,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
-import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,9 +70,9 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import static com.naranjatradicionaldegandia.elias.ambos.Mqtt.broker;
 import static com.naranjatradicionaldegandia.elias.ambos.Mqtt.clientApp;
-import static com.naranjatradicionaldegandia.elias.ambos.Mqtt.clientId;
 import static com.naranjatradicionaldegandia.elias.ambos.Mqtt.qos;
 import static com.naranjatradicionaldegandia.elias.ambos.Mqtt.topicRoot;
+import static com.naranjatradicionaldegandia.elias.robotdomotico.ui.home.HomeFragment.modoManual;
 import static java.lang.Integer.valueOf;
 
 public class MainActivity extends AppCompatActivity {
@@ -99,7 +95,11 @@ public class MainActivity extends AppCompatActivity {
         //comprobador de modos por si vigilancia está activo
 
 
+        if(pref.getBoolean("configrp", false)){
+            pref.edit().putBoolean("configrp", true).commit();
+            Log.d(TAG, "Tratando de poner en true configrp");
 
+        }
         try {
             Log.i("MQTT: ", "Conectando al broker " + broker);
             client = new MqttClient(broker, clientApp, new MemoryPersistence());
@@ -338,13 +338,17 @@ public class MainActivity extends AppCompatActivity {
 
             // Sets whether notifications posted to this channel appear on the lockscreen or not
             androidChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-
+            Uri sound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + R.raw.amenaza);
+            AudioAttributes attributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .build();
             mManager.createNotificationChannel(androidChannel);
             Notification.Builder nb = new Notification.Builder(getApplicationContext(), CHANNEL_ID)
                     .setContentTitle(title)
                     .setContentText(msg)
                     .setTicker(title)
                     .setShowWhen(true)
+                    .setSound(sound, attributes)
                     .setStyle(new Notification.BigPictureStyle().bigPicture(imagen))
                     .setSmallIcon(R.mipmap.ic_launcher_foreground)
                     .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
@@ -352,7 +356,7 @@ public class MainActivity extends AppCompatActivity {
                     .setAutoCancel(true).setContentIntent(contentIntent);
 
             if(isPermissionGranted()) {
-                String numero = pref.getString("emergencia", "112");
+                String numero = pref.getString("numero_emergencia", "112");
                 Intent llamar_intent = new Intent(Intent.ACTION_CALL,
                         Uri.parse("tel:"+ numero));
                 PendingIntent llamar = PendingIntent.getActivity(this, 0, llamar_intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -365,8 +369,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
 
+
+        getMenuInflater().inflate(R.menu.main, menu);
 
         return true;
     }
@@ -374,10 +379,28 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            // launch settings activity
-            Log.d("MainActivity - OptionsItemSelected", "Inicializando AjustesActivity");
-            startActivity(new Intent(context, AjustesActivity.class));
-            return true;
+            if(!modoManual){
+                // launch settings activity
+                Log.d("MainActivity - OptionsItemSelected", "Inicializando AjustesActivity");
+                startActivity(new Intent(context, AjustesActivity.class));
+                return true;
+            }else {
+                Toast.makeText(getApplicationContext(), "Por favor, desactiva el modo manual para poder continuar", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+        if(id == R.id.action_robot){
+            if(!modoManual){
+                Log.d("MainActivity - OptionsItemSelected", "Inicializando EnlaceActivity");
+                Intent i = new Intent(context, EnlaceActivity.class);
+                i.putExtra("inicio", "voluntario");
+                startActivity(i);
+                return true;
+
+            }else{
+                Toast.makeText(getApplicationContext(), "Por favor, desactiva el modo manual para poder continuar", Toast.LENGTH_SHORT).show();
+            }
+
         }
         return super.onOptionsItemSelected(item);
     }

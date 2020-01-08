@@ -46,7 +46,7 @@ public class RP {
             MqttMessage message = new MqttMessage(mensaje.getBytes());
             message.setQos(qos);
             message.setRetained(false);
-            client.publish(topicRoot+"estado", message);
+            client.publish(topicRoot+"rp", message);
             client.publish(topicRoot, message);
         } catch (MqttException e) {
             Log.e("MQTT", "Error al publicar.", e);

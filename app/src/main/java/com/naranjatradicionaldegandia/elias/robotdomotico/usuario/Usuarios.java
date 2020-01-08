@@ -100,7 +100,7 @@ public class Usuarios {
                             public void onComplete(@NonNull Task<DocumentSnapshot> task){
                                 if (task.isSuccessful()) {
                                     String nombre = task.getResult().getString("robot");
-                                    name.setText("¡Hola! Soy " + nombre + " . Por favor, elige un modo. ¡Me encanta trabajar para tí!");
+                                    name.setText("¡Hola! Soy " + nombre + ". Por favor, elige un modo. Yo haré el resto por ti.");
 
                                     Log.d("Firestore", "robot:" + nombre);
                                 } else {
@@ -125,14 +125,14 @@ public class Usuarios {
                                 if (task.isSuccessful()) {
                                     String nombre = task.getResult().getString("robot");
 
-                                  final String texto = ("¡Hola! Soy " + nombre + " . Por favor, elige un modo. ¡Me encanta trabajar para tí!");
+                                  final String texto = ("¡Hola! Soy " + nombre + ". Por favor, elige un modo. .  .    P");
 
                                         textToSpeechSystem = new TextToSpeech(actividad, new TextToSpeech.OnInitListener() {
                                             @Override
                                             public void onInit(int status) {
                                                 if (status == TextToSpeech.SUCCESS) {
                                                     String textToSay = texto;
-                                                    textToSpeechSystem.speak(textToSay, TextToSpeech.QUEUE_ADD, null);
+                                                    textToSpeechSystem.speak(textToSay, TextToSpeech.QUEUE_FLUSH, null);
 
                                                 }
                                             }

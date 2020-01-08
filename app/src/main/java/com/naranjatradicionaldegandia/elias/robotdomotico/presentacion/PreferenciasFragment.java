@@ -2,13 +2,13 @@ package com.naranjatradicionaldegandia.elias.robotdomotico.presentacion;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-import android.preference.SwitchPreference;
 
 
 import android.preference.Preference;
 
 
 import android.preference.EditTextPreference;
+import android.preference.SwitchPreference;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -126,5 +126,13 @@ public class PreferenciasFragment extends PreferenceFragment {
 
 
             });
+
+            final SwitchPreference config = (android.preference.SwitchPreference) findPreference("configrp");
+
+
+    }
+
+    public void actualizarConfig(){
+        final SwitchPreference config = (android.preference.SwitchPreference) findPreference("configrp");
     }
 }

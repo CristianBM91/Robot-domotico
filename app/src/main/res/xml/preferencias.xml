@@ -60,6 +60,11 @@
             android:key="valoresTerminarRecarga"
             android:summary="@string/terminar_recarga_preferencias_summary"
             android:title="@string/terminar_recarga_preferencias_titulo" />
+        <SwitchPreference
+            android:key="configrp"
+            android:defaultValue="false"
+            android:title="@string/configrp_titulo"
+            android:summary="@string/configrp_summary"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

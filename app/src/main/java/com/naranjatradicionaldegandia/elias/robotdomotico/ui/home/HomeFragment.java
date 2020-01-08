@@ -1,13 +1,12 @@
 package com.naranjatradicionaldegandia.elias.robotdomotico.ui.home;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,91 +22,96 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.naranjatradicionaldegandia.elias.ambos.Imagen;
-import androidx.annotation.Nullable;
+
 import androidx.annotation.NonNull;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
 import com.naranjatradicionaldegandia.elias.ambos.RP;
 import com.naranjatradicionaldegandia.elias.ambos.Robot;
-import com.naranjatradicionaldegandia.elias.robotdomotico.GeneratePictureStyleNotification;
 import com.naranjatradicionaldegandia.elias.robotdomotico.R;
 import com.naranjatradicionaldegandia.elias.robotdomotico.ServicioOn;
 import com.naranjatradicionaldegandia.elias.robotdomotico.presentacion.MainActivity;
 import com.naranjatradicionaldegandia.elias.robotdomotico.usuario.Usuarios;
 
-import org.w3c.dom.Text;
-
-import java.util.Locale;
-
 import static android.content.Context.SENSOR_SERVICE;
-import static androidx.core.content.ContextCompat.getSystemService;
 
 public class HomeFragment extends Fragment{
-
+    private ProgressBar mProgressBar;
     private HomeViewModel homeViewModel;
     private View vista;
     private StorageReference storageRef;
-    TextView textX, textY, textZ;
-    SensorManager sensorManager;
-    Sensor sensor;
-    TextView textoModo;
-    Vibrator vibrator;
-    FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
+    private   TextView textX, textY, textZ;
+    private    SensorManager sensorManager;
+    private  Sensor sensor;
+    private   TextView textoModo;
+    private RadioGroup rGroup;
+   private Vibrator vibrator;
+    private  ImageButton camara;
+
+   public static boolean modoManual = false;
+    private  TextView txt_estado;
+    private   boolean primeraVez=true;
+    private  SharedPreferences pref;
+
+    private FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
+    private int mProgressStatus = 0;
     private TextToSpeech textToSpeechSystem;
     public View onCreateView(@NonNull LayoutInflater inflater,
                                             ViewGroup container, Bundle savedInstanceState) {
+
+
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        actualizarImagen();
+
         storageRef = FirebaseStorage.getInstance().getReference();
         vista = root;
         vibrator = (Vibrator) this.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
 
+    pref =
+            PreferenceManager.getDefaultSharedPreferences(getContext());
 
 
-        initActivityScreenOrientPortrait();
         // DEFINICIONES <---------------------------------------------------------------------------
         sensorManager = (SensorManager) getContext().getSystemService(SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-        final TextView txt_estado = (TextView)vista.findViewById(R.id.txt_estado);
+        txt_estado = (TextView)vista.findViewById(R.id.txt_estado);
        Usuarios.getNombreRobotParaTextView(usuario, txt_estado, getActivity());
         textX = (TextView) vista.findViewById(R.id.textX);
         textY = (TextView) vista.findViewById(R.id.textY);
         textZ = (TextView) vista.findViewById(R.id.textZ);
-        SharedPreferences pref =
-                PreferenceManager.getDefaultSharedPreferences(getContext());
 
+        mProgressBar = (ProgressBar) vista.findViewById(R.id.progressbar);
+        if(primeraVez){
+            mProgressBar.setProgress(13);
+        }
 
+         RadioGroup rGroup = (RadioGroup)vista.findViewById(R.id.radioGroup);
 
-        final RadioGroup rGroup = (RadioGroup)vista.findViewById(R.id.radioGroup);
-// This will get the radiobutton in the radiogroup that is checked
         RadioButton checkedRadioButton = (RadioButton)rGroup.findViewById(rGroup.getCheckedRadioButtonId());
         textoModo = (TextView)vista.findViewById(R.id.textoModo) ;
 
+        actualizarImagen();
         //Selector de modos
         rGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
 
@@ -116,6 +120,7 @@ public class HomeFragment extends Fragment{
         {
             public void onCheckedChanged(RadioGroup group, int checkedId)
             {
+
                 RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
                 boolean isChecked = checkedRadioButton.isChecked();
                 vibrator.vibrate(45);
@@ -124,16 +129,22 @@ public class HomeFragment extends Fragment{
 
 
                     if(checkedRadioButton.getText().toString().contains("Manual")){
+
                         getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
                         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                         MainActivity.modoAmenaza = false;
                         textoModo.setText("Modo Manual activado");
+                        modoManual = true;
                         getActivity().stopService(new Intent(getContext(), ServicioOn.class));
+                        mProgressBar.setProgress(0);
+
+
+
                     }
                     if(checkedRadioButton.getText().toString().contains("Auto")){
 
                         Robot.activarModoAutomatico();
-
+                        hablar("Modo automático iniciado. ", getActivity());
 
                         getActivity().startService(new Intent(getContext(), ServicioOn.class));
                         MainActivity.modoAmenaza = false;
@@ -143,15 +154,24 @@ public class HomeFragment extends Fragment{
                     if(checkedRadioButton.getText().toString().contains("Vigi")){
                         getActivity().stopService(new Intent(getContext(), ServicioOn.class));
                         textoModo.setText("Modo Vigilancia activado");
+                        hablar("Modo vigilancia activado. ", getActivity());
                         MainActivity.modoAmenaza = true;
                         Robot.activarModoVigilancia();
                     }
+
                 }
             }
         });
 
         //Botones
-        ImageButton camara =  vista.findViewById(R.id.imageButton);
+         camara =  vista.findViewById(R.id.imageButton);
+
+        textoModo.setVisibility(View.INVISIBLE);
+        camara.setVisibility(View.INVISIBLE);
+        TextView txt4 = vista.findViewById(R.id.textView4);
+        txt4.setVisibility(View.INVISIBLE);
+        txt_estado.setVisibility(View.INVISIBLE);
+
         ImageButton derecha = vista.findViewById(R.id.botonDerecha);
         ImageButton izquierda = vista.findViewById(R.id.botonIzquierda);
         derecha.setOnClickListener(new View.OnClickListener() {
@@ -182,9 +202,12 @@ public class HomeFragment extends Fragment{
         desactivarManual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                hablar("Modo manual desactivado. ", getActivity());
+                textoModo.setText("Ha desactivado el modo manual. ");
+                modoManual = false;
                 startActivity(new Intent(getContext(), MainActivity.class));
-                textoModo.setText("Ha desactivado el modo manual. Seleccione otro modo, por favor.");
+
+
             }
         });
 
@@ -193,30 +216,6 @@ public class HomeFragment extends Fragment{
         return root;
     }
 
-    private void initActivityScreenOrientPortrait()
-    {
-        // Avoid screen rotations (use the manifests android:screenOrientation setting)
-        // Set this to nosensor or potrait
-
-        // Set window fullscreen
-
-
-        DisplayMetrics metrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-        // Test if it is VISUAL in portrait mode by simply checking it's size
-        boolean bIsVisualPortrait = ( metrics.heightPixels >= metrics.widthPixels );
-
-        if( !bIsVisualPortrait )
-        {
-            // Swap the orientation to match the VISUAL portrait mode
-            if(  getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT )
-            {  getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); }
-            else {  getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT ); }
-        }
-        else {  getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR); }
-
-    }
     void borrarImagen(final StorageReference imagenReferencia){
 
         final Handler handler = new Handler();
@@ -234,12 +233,21 @@ public class HomeFragment extends Fragment{
         handler.postDelayed(runnable, 1000);
     }
     public void actualizarImagen(){
+        if(primeraVez){
 
+            mProgressBar.setProgress(26);
+        }
         final Handler handler = new Handler();
         Runnable runnable = new Runnable() {
 
 
             public void run() {
+                if(primeraVez){
+                    mProgressBar.setProgress(44);
+                    if(modoManual){
+                        hablar("Activando modo manual. ", getActivity());
+                    }
+                }
 
                 final Task<QuerySnapshot> query = FirebaseFirestore.getInstance()
                         .collection("Grabaciones")
@@ -251,18 +259,40 @@ public class HomeFragment extends Fragment{
                                     if (task.isSuccessful()) {
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             Log.d("FIREBASE", document.getId() + " => " + document.getData());
+                                            if(primeraVez){
+                                                mProgressBar.setProgress(68);
+                                            }
 
                                             String url = document.getString("url");
                                             String titulo = document.getString("titulo");
                                             ImageView imagen = getActivity().findViewById(R.id.imgrp);
                                             StorageReference imagenReferencia = storageRef.child("imagenes/" + document.getId());
                                             if(HomeFragment.this.isVisible()) {
+                                                if(primeraVez){
+                                                    mProgressBar.setProgress(85);
+                                                }
                                                 Glide.with(getContext())
                                                         .load(url)
 
                                                         .into(imagen);
 
                                                 borrarImagen(imagenReferencia);
+                                                if(primeraVez && modoManual == false){
+                                                    mProgressBar.setProgress(100);
+
+                                                    imagen.setVisibility(View.VISIBLE);
+                                                    textoModo.setVisibility(View.VISIBLE);
+                                                    camara.setVisibility(View.VISIBLE);
+                                                    TextView txt4 = vista.findViewById(R.id.textView4);
+                                                    txt4.setVisibility(View.VISIBLE);
+                                                    txt_estado.setVisibility(View.VISIBLE);
+
+
+                                                }else{
+                                                    mProgressBar.setVisibility(View.INVISIBLE);
+                                                }
+
+                                                primeraVez = false;
                                             }
 
                                         }
@@ -278,12 +308,32 @@ public class HomeFragment extends Fragment{
                 handler.postDelayed(this, 500);
             }
         };
-        handler.postDelayed(runnable, 600);
+        handler.postDelayed(runnable, 150);
 
     }
 
 
+    public void hablar(final String mensaje, Activity actividad){
+        String lastMensaje = " ";
+        if(!(lastMensaje.equals(mensaje))){
+            if(pref.getBoolean("voces", true)){
+                textToSpeechSystem = new TextToSpeech(actividad, new TextToSpeech.OnInitListener() {
+                    @Override
+                    public void onInit(int status) {
+                        if (status == TextToSpeech.SUCCESS) {
+                            String textToSay = mensaje;
+                            Log.d("TTS", "Reproduciendo mensaje: " + mensaje);
+                            textToSpeechSystem.speak(textToSay, TextToSpeech.QUEUE_FLUSH, null);
 
+                        }
+                    }
+                });
+            }
+            lastMensaje = mensaje;
+        }
+
+
+    }
 
     // bool
 

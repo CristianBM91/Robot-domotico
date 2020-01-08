@@ -3,6 +3,7 @@ package com.naranjatradicionaldegandia.elias.iot;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.google.android.gms.tasks.Continuation;
@@ -87,7 +89,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        ImageView img = findViewById(R.id.imageView);
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent (MainActivity.this, EnlaceActivity.class);
+                i.putExtra("modo", "test");
+                startActivity(i);
+            }
+        });
         datos = new DatosFirestore();
 
         // Creates new handlers and associated threads for camera
@@ -116,11 +126,14 @@ public class MainActivity extends AppCompatActivity {
             connOpts.setCleanSession(true);
 
             MyCallback callback = new MyCallback();
-            client.setCallback(callback);
-            connOpts.setKeepAliveInterval(300);
+
+            connOpts.setKeepAliveInterval(700);
             connOpts.setWill(topicRoot + "WillTopic", "App desconectada".getBytes(),
                     qos, false);
             client.connect(connOpts);
+            client.subscribe(topicRoot+"rp", qos);
+            client.setCallback(callback);
+
 
 
         } catch (MqttException e) {

@@ -3,6 +3,7 @@ package com.naranjatradicionaldegandia.elias.robotdomotico.ui.acercaDe;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -122,7 +123,7 @@ public class AcercaDeFragment extends Fragment {
 
             }
         });
-
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         btncorreo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

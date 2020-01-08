@@ -1,15 +1,18 @@
 package com.naranjatradicionaldegandia.elias.robotdomotico.presentacion;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.AccessToken;
@@ -49,7 +52,7 @@ import static com.naranjatradicionaldegandia.elias.robotdomotico.usuario.Usuario
 public class SesionActivity extends AppCompatActivity {
     private static final String TAG = "INICIO SESION";
     List<AuthUI.IdpConfig> providers;
-    private static final int MY_REQUEST_CODE = 777;
+    private static final int MY_REQUEST_CODE = 555;
     public static boolean appLanzada;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,14 +63,45 @@ public class SesionActivity extends AppCompatActivity {
 
 
      //   }
-        providers = Arrays.asList(
-                new AuthUI.IdpConfig.EmailBuilder().build(),
-                new AuthUI.IdpConfig.PhoneBuilder().build(),
-                new AuthUI.IdpConfig.FacebookBuilder().build(),
-                new AuthUI.IdpConfig.GoogleBuilder().build()
 
-        );
-        showSignInOptions();
+        if(e.getString("exito").equals("si")){
+            Log.d(TAG, "Se ha enlazado con exito. El Bundle llega bien, iniciando seison.");
+            providers = Arrays.asList(
+                    new AuthUI.IdpConfig.EmailBuilder().build(),
+                    new AuthUI.IdpConfig.PhoneBuilder().build(),
+                    new AuthUI.IdpConfig.FacebookBuilder().build(),
+                    new AuthUI.IdpConfig.GoogleBuilder().build()
+
+            );
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showSignInOptions();
+                }
+            }, 100);
+
+        } else {
+            new AlertDialog.Builder(this)
+                    .setTitle("Ha habido un error de sincronización")
+                    .setMessage("Por favor, reinicie la aplicación y vuelve a intentarlo")
+
+                    // Specifying a listener allows you to take an action before dismissing the dialog.
+                    // The dialog is automatically dismissed when a dialog button is clicked.
+                    .setPositiveButton("Reiniciar", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Continue with delete operation
+                            startActivity(new Intent(SesionActivity.this, EnlaceActivity.class));
+
+                        }
+                    })
+
+
+
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
+
     }
 
     private void showSignInOptions() {
@@ -98,11 +132,13 @@ public class SesionActivity extends AppCompatActivity {
                         Toast.makeText(this, "Bienvenido de nuevo, " + user.getDisplayName(), Toast.LENGTH_LONG).show();
                         if(pref.getBoolean("voces", true)){
                             Usuarios.decirNombreRobot(user, this);
+
+
                         }
 
                     }
-
                     startActivity(new Intent(this, MainActivity.class));
+
                     finish();
 
                 } else {
