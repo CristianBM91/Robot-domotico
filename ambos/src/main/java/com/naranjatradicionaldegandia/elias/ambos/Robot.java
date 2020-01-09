@@ -29,7 +29,7 @@ public class Robot {
         }
         try {
             Log.i("MQTT", "Enviando GirarDerecha a robot");
-            String mensaje = "giroderecha";
+            String mensaje = "0x000E";
             MqttMessage message = new MqttMessage(mensaje.getBytes());
             message.setQos(qos);
             message.setRetained(false);
@@ -49,7 +49,7 @@ public class Robot {
         }
         try {
             Log.i("MQTT", "Enviando GirarIzquierda a robot");
-            String mensaje = "giroizquierda";
+            String mensaje = "0x000F";
             MqttMessage message = new MqttMessage(mensaje.getBytes());
             message.setQos(qos);
             message.setRetained(false);
@@ -69,7 +69,7 @@ public class Robot {
         }
         try {
             Log.i("MQTT", "Enviando avanzar a robot");
-            String mensaje = "giroderecha";
+            String mensaje = "0x000D";
             MqttMessage message = new MqttMessage(mensaje.getBytes());
             message.setQos(qos);
             message.setRetained(false);
@@ -134,7 +134,7 @@ public class Robot {
         }
         try {
             Log.i("MQTT", "Enviando avanzar a robot");
-            String mensaje = "parar";
+            String mensaje = "0x0010";
             MqttMessage message = new MqttMessage(mensaje.getBytes());
             message.setQos(qos);
             message.setRetained(false);

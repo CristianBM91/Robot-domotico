@@ -153,15 +153,58 @@
 
         <ImageButton
             android:id="@+id/imageButton"
+            style="@android:style/Widget.Holo.Light.ImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="380dp"
+            android:text="Capturar"
             app:layout_constraintBottom_toBottomOf="@+id/imgrp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_menu_camera" />
+            app:srcCompat="@drawable/ic_menu_camera"
+            tools:text="Capturar" />
+
+        <ImageButton
+            android:id="@+id/botonAtras"
+            style="@null"
+            android:layout_width="297dp"
+            android:layout_height="113dp"
+            android:layout_marginTop="68dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="32dp"
+            android:background="@null"
+            android:orientation="vertical"
+            android:rotation="180"
+            android:scaleType="fitCenter"
+            android:tint="#4CAF50"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imgrp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/dobleflecha" />
+
+        <ImageButton
+            android:id="@+id/botonAvanzar"
+            style="@null"
+            android:layout_width="297dp"
+            android:layout_height="113dp"
+            android:layout_marginTop="68dp"
+            android:layout_marginBottom="32dp"
+            android:adjustViewBounds="false"
+            android:background="@null"
+            android:cropToPadding="false"
+            android:orientation="vertical"
+            android:rotation="0"
+            android:scaleType="fitCenter"
+            android:tint="#4CAF50"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imgrp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/dobleflecha" />
 
         <Button
             android:id="@+id/desactivarModoManual"

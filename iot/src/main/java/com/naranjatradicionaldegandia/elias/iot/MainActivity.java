@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         // Camera code is complicated, so we've shoved it all in this closet class for you.
         mCamera = DoorbellCamera.getInstance();
         mCamera.initializeCamera(this, mCameraHandler, mOnImageAvailableListener);
-        temporizadorHandler.postDelayed(tomaFoto, 3 * 1000); //llamamos en 3 seg.
+        //temporizadorHandler.postDelayed(tomaFoto, 3 * 1000); //llamamos en 3 seg.
         mCloudThread = new HandlerThread("CloudThread");
         mCloudThread.start();
         mCloudHandler = new Handler(mCloudThread.getLooper());

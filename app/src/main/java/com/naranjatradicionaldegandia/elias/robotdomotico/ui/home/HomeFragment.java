@@ -67,7 +67,7 @@ public class HomeFragment extends Fragment{
     private RadioGroup rGroup;
    private Vibrator vibrator;
     private  ImageButton camara;
-
+    private ImageButton atras, avanzar;
    public static boolean modoManual = false;
     private  TextView txt_estado;
     private   boolean primeraVez=true;
@@ -100,7 +100,8 @@ public class HomeFragment extends Fragment{
         textX = (TextView) vista.findViewById(R.id.textX);
         textY = (TextView) vista.findViewById(R.id.textY);
         textZ = (TextView) vista.findViewById(R.id.textZ);
-
+        atras = vista.findViewById(R.id.botonAtras);
+        avanzar = vista.findViewById(R.id.botonAvanzar);
         mProgressBar = (ProgressBar) vista.findViewById(R.id.progressbar);
         if(primeraVez){
             mProgressBar.setProgress(13);
@@ -187,6 +188,20 @@ public class HomeFragment extends Fragment{
             public void onClick(View v) {
                 vibrator.vibrate(25);
                Robot.girarIzquierda();
+            }
+        });
+        avanzar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(25);
+                Robot.avanzar();
+            }
+        });
+        atras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibrator.vibrate(25);
+                Robot.parar();
             }
         });
         camara.setOnClickListener(new View.OnClickListener() {
